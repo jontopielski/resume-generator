@@ -19,11 +19,13 @@ const PromptContainer = React.createClass({
     const { name, email, phoneNumber } = this.state;
     console.log('Submit button pressed!')
     axios.post(`${server_url}/generate?name=${name}&email=${email}&phoneNumber=${phoneNumber}`)
-    .then((response) => console.log('Successful post!'))
-    .catch((err) => console.log(err))
-    this.context.router.push({
-      pathname: '/resume',
+    .then((response) => {
+      console.log('Successful post!')
+      this.context.router.push({
+        pathname: '/resume',
+      })
     })
+    .catch((err) => console.log(err))
   },
   handleUpdateInfo (e) {
     this.setState({ [e.target.name]: e.target.value });
