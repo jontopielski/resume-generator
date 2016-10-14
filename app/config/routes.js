@@ -3,7 +3,7 @@ import { Router, Route, hashHistory, IndexRoute } from 'react-router'
 import Main from '../components/Main'
 import Home from '../components/Home'
 import PromptContainer from '../containers/PromptContainer'
-import ResumeContainer from '../components/ResumeContainer'
+import ResumeContainer from '../containers/ResumeContainer'
 // import Home from '../components/Home'
 
 const routes = (

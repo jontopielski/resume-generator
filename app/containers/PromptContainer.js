@@ -18,7 +18,6 @@ const PromptContainer = React.createClass({
     e.preventDefault();
     const { name, email, phoneNumber } = this.state;
     console.log('Submit button pressed!')
-    console.log(`${server_url}/generate?name=${name}&email=${email}&phoneNumber=${phoneNumber}`)
     axios.post(`${server_url}/generate?name=${name}&email=${email}&phoneNumber=${phoneNumber}`)
     .then((response) => console.log('Successful post!'))
     .catch((err) => console.log(err))
@@ -29,7 +28,7 @@ const PromptContainer = React.createClass({
   handleUpdateInfo (e) {
     this.setState({ [e.target.name]: e.target.value });
   },
-  render: function () {
+  render () {
     return (
       <Prompt
         onSubmitInfo={this.handleSubmitInfo}
