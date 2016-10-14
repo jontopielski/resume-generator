@@ -1,0 +1,1 @@
+export const sample_resume_url = 'https://s3-us-west-2.amazonaws.com/resume-gen/sample-resume.pdf'
