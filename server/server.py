@@ -1,5 +1,5 @@
 from flask import Flask, request
-from pylatex import Document, Section, Subsection, Command
+from pylatex import Document, Section, Subsection, Command, Package
 from pylatex.utils import italic, NoEscape
 import tinys3
 import sys, fileinput
@@ -43,14 +43,22 @@ def generate_latex():
 
   print 'Proper parameters passed in..'
 
-  doc = Document('resume')
+  geometry_options = 'left=0.25in,top=0.25in,right=0.25in,bottom=0.25in'
 
-  with doc.create(Section(request.args['name'])):
-    doc.append(request.args['email'])
-    doc.append(request.args['phoneNumber'])
+  doc = Document('resume', documentclass='resume')
+
+  # TODO: Perform phone number and email validation on FE
+  subheader_str = NoEscape('(%s)~$\cdot$~%s~$\cdot$~%s \\\\ %s' % (request.args['phoneNumber'][0:3], request.args['phoneNumber'][3:6], request.args['phoneNumber'][6:10], request.args['email']))
+  
+  doc.preamble.append(Package('geometry', options=geometry_options))
+  doc.preamble.append(Command('name', request.args['name']))
+  doc.preamble.append(Command('address', subheader_str))
+
+  doc.create(Section('Education'))
 
   print 'Generating pdf..'
   doc.generate_pdf()
+  doc.generate_tex()
 
   populate_aws_credentials()
 
@@ -61,3 +69,6 @@ def generate_latex():
 
 
   return 'Ok'
+
+if __name__ == "__main__":
+  app.run()
