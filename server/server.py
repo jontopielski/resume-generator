@@ -1,5 +1,6 @@
 from flask import Flask, request
-from pylatex import Document, Section, Subsection, Command, Package
+from pylatex import Document, Section, Subsection, Command, Package, UnsafeCommand
+from pylatex.base_classes import Environment
 from pylatex.utils import italic, NoEscape
 import tinys3
 import sys, fileinput
@@ -54,7 +55,7 @@ def generate_latex():
   doc.preamble.append(Command('name', request.args['name']))
   doc.preamble.append(Command('address', subheader_str))
 
-  doc.create(Section('Education'))
+  # doc.append(Environment('rSection', options=1, arguments=['Education']))
 
   print 'Generating pdf..'
   doc.generate_pdf()
