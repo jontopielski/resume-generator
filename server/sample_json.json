@@ -1,0 +1,100 @@
+{
+  "sections": [
+    {
+      "sectionName": "header",
+      "name": "Jon Smith",
+      "phoneNumber": "4140923145",
+      "email": "jsmith@gmail.com"
+    },
+    {
+      "sectionName": "education",
+      "college": "University of FooBar",
+      "graduationDate": "June 2017",
+      "degreeType": "B.S. in Economics",
+      "gpa": "3.3",
+      "maxGpa": "4.0",
+      "isMajorGpa": true
+    },
+    {
+      "sectionName": "experience",
+      "listItems": [
+        {
+          "primaryText": "Foogle",
+          "secondaryText": "Intern",
+          "startDate": "June 2016",
+          "endDate": "Present",
+          "location": "San Francisco, CA",
+          "descriptionItems": [
+            "description 1",
+            "description 2",
+            "description 3"
+          ]
+        },
+        {
+          "primaryText": "Farmazon",
+          "secondaryText": "Intern",
+          "dateStarted": "May 2015",
+          "startDate": "Sept 2015",
+          "endDate": "Seattle, WA",
+          "descriptionItems": [
+            "description 1a",
+            "description 2a",
+            "description 3a"
+          ]
+        }
+      ]
+    },
+    {
+      "sectionName": "projects",
+      "listItems": [
+        {
+          "primaryText": "SomeCoolThingymajig",
+          "secondaryText": "Programmer",
+          "startDate": "June 2016",
+          "endDate": "Present",
+          "location": "",
+          "descriptionItems": [
+            "did 1",
+            "did 2",
+            "did 3"
+          ]
+        },
+        {
+          "primaryText": "Programming Org",
+          "secondaryText": "President",
+          "startDate": "May 2015",
+          "endDate": "Sept 2015",
+          "location": "Seattle, WA",
+          "descriptionItems": [
+            "description 1a",
+            "description 2a",
+            "description 3a"
+          ]
+        }
+      ]
+    },
+    {
+      "sectionName": "skills",
+      "skillsList": [
+        {
+          "listName": "Languages",
+          "listItems": [
+            "Java",
+            "Python",
+            "C++"
+          ]
+        },
+        {
+          "listName": "Software",
+          "listItems": [
+            "EC2",
+            "S3",
+            "Flask",
+            "NodeJS",
+            "ReactJS"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -8,7 +8,7 @@ function Resume ({ isLoading }) {
   return isLoading ? <Loading /> :
   (
     <MainContainer>
-      <embed src={uploaded_resume_url} width="900px" height="500px" />
+      <embed src={uploaded_resume_url} width="900px" height="1200px" />
     </MainContainer>
   )
 }
