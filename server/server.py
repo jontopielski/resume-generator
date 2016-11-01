@@ -43,27 +43,31 @@ def fill_document(doc):
 
 @app.route('/generate', methods=['POST'])
 def generate_latex():
-
-  json_body = json_loads_byteified(json.dumps(request.get_json(), ensure_ascii=False))
+  try:
+    json_body = json_loads_byteified(json.dumps(request.get_json(), ensure_ascii=False))
+  except:
+    return error_message('Unable to convert json in request body to readable format.')
 
   if json_body is None:
-    return jsonify('No JSON passed into request..')
+    return error_message('No valid json found in request body.')
 
-  # json_body = byteify(json_body)
-
-  if (is_json_valid(json_body) is False):
-    return jsonify({
-      'message': 'Invalid JSON passed into json body of request.'
-    })
-  else:
-    return 'JSON validated successfully!'
+  if (not is_json_valid(json_body)):
+    return error_message('Problem validating json in request body with json-schema.')
 
   geometry_options = 'left=0.25in,top=0.25in,right=0.25in,bottom=0.25in'
 
   doc = Document('resume', documentclass='resume')
 
   # TODO: Perform phone number and email validation on FE
-  subheader_str = NoEscape('(%s)~$\cdot$~%s~$\cdot$~%s \\\\ %s' % (request.args['phoneNumber'][0:3], request.args['phoneNumber'][3:6], request.args['phoneNumber'][6:10], request.args['email']))
+  subheader_str = NoEscape('(%s)~$\cdot$~%s~$\cdot$~%s \\\\ %s' %
+      (
+        request.args['phoneNumber'][0:3],
+        request.args['phoneNumber'][3:6],
+        request.args['phoneNumber'][6:10],
+        request.args['email']
+      ))
+
+  # TODO: Read the JSON file and properly populate all the fields.
   
   doc.preamble.append(Package('geometry', options=geometry_options))
   doc.preamble.append(Command('name', request.args['name']))
@@ -99,26 +103,31 @@ def generate_latex():
   return 'Ok'
 
 def is_json_valid(json_data):
+  json_schema_file = 'resume-json-schema.json'
   try:
-    with open('resume-json-schema.json') as json_schema:
-      # schema = json.loads(json.dumps(json.load(json_schema), ensure_ascii=False))
-      print json_data
-      schema = json_load_byteified(json_schema)
-      validate(json_data, schema)
+    json_schema = json_load_byteified(open(json_schema_file))
   except IOError:
-    print 'Error: Cannot open %s' % ('resume-json-schema.json')
+    print 'Error: Cannot open %s,' % (json_schema_file)
     return False
-  except SchemaError as err:
-    print 'Invalid JSON Schema passed in..'
+
+  try:
+      validate(json_data, schema)
+  except SchemaError:
+    print 'Error: Invalid JSON Schema being used. Check %s.' % json_schema_file
     return False
   except ValidationError as err:
-    print 'Passed JSON not valid under resume-json-schema.json..'
-    print err
+    print 'Error: Passed JSON not valid under %s. \nErrorMessage: %s.' % (json_schema_file, err)
     return False
   except:
-    print 'Unexpected Error..'
+    print 'Error: Something unexpected happened.'
     raise
   return True
+
+def error_message(message):
+  return jsonify({
+    'error_message': message  
+    }
+  )
 
 def json_load_byteified(file_handle):
     return byteify(
