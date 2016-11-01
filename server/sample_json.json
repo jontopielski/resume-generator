@@ -33,9 +33,9 @@
         {
           "primaryText": "Farmazon",
           "secondaryText": "Intern",
-          "dateStarted": "May 2015",
-          "startDate": "Sept 2015",
-          "endDate": "Seattle, WA",
+          "startDate": "May 2015",
+          "endDate": "Sept 2015",
+          "location": "Seattle, WA",
           "descriptionItems": [
             "description 1a",
             "description 2a",
@@ -81,7 +81,7 @@
           "listItems": [
             "Java",
             "Python",
-            "C++"
+            "C++" 
           ]
         },
         {

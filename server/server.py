@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify
-from pylatex import Document, Section, Subsection, Command, Package, UnsafeCommand
+from pylatex import Document, Section, Subsection, Command, Package, UnsafeCommand, Tabular
 from pylatex.base_classes import Environment
 from pylatex.utils import italic, NoEscape
 from jsonschema import validate, ValidationError, SchemaError
@@ -14,6 +14,9 @@ aws_secret_id = ''
 
 class RSectionEnv(Environment):
   _latex_name = 'rSection'
+
+class rSubsectionEnv(Environment):
+  _latex_name = 'rSubsection'
 
 def populate_aws_credentials():
   global aws_access_id
@@ -54,40 +57,80 @@ def generate_latex():
   if (not is_json_valid(json_body)):
     return error_message('Problem validating json in request body with json-schema.')
 
-  geometry_options = 'left=0.25in,top=0.25in,right=0.25in,bottom=0.25in'
 
   doc = Document('resume', documentclass='resume')
 
-  # TODO: Perform phone number and email validation on FE
-  subheader_str = NoEscape('(%s)~$\cdot$~%s~$\cdot$~%s \\\\ %s' %
-      (
-        request.args['phoneNumber'][0:3],
-        request.args['phoneNumber'][3:6],
-        request.args['phoneNumber'][6:10],
-        request.args['email']
-      ))
-
-  # TODO: Read the JSON file and properly populate all the fields.
-  
+  geometry_options = 'left=0.25in,top=0.25in,right=0.25in,bottom=0.25in'
   doc.preamble.append(Package('geometry', options=geometry_options))
-  doc.preamble.append(Command('name', request.args['name']))
-  doc.preamble.append(Command('address', subheader_str))
 
-  # doc.append(Environment('rSection', options=1, arguments=['Education']))
-  with doc.create(RSectionEnv(arguments='Education')) as env:
-    env.append('Education Section')
+  resume_sections = json_body['sections']
 
-  with doc.create(RSectionEnv(arguments='Experience')) as env:
-    env.append('Experience Section')
+  section_dict = {}
 
-  with doc.create(RSectionEnv(arguments='Projects')) as env:
-    env.append('Projects Section')
+  for i in range(0, len(resume_sections)):
+    section_dict[resume_sections[i]['sectionName']] = resume_sections[i]
 
-  with doc.create(RSectionEnv(arguments='Relevant Coursework')) as env:
-    env.append('Relevant Coursework Section')
+  if 'header' in section_dict:
+    header_data = section_dict['header']
+    # TODO: Perform phone number and email validation on FE
+    subheader_str = NoEscape('(%s)~$\cdot$~%s~$\cdot$~%s \\\\ %s' % (
+      header_data['phoneNumber'][0:3],
+      header_data['phoneNumber'][3:6],
+      header_data['phoneNumber'][6:10],
+      header_data['email']
+    ))
+    doc.preamble.append(Command('name', header_data['name']))
+    doc.preamble.append(Command('address', subheader_str))
 
-  with doc.create(RSectionEnv(arguments='Skills')) as env:
-    env.append('Skills Section')
+  if 'education' in section_dict:
+    with doc.create(RSectionEnv(arguments='Education')) as education_section:
+      education_data = section_dict['education']
+      university_str = NoEscape('{\\bf %s} \\hfill {\\em Expected %s}' % (
+        education_data['college'],
+        education_data['graduationDate']
+      ))
+      degree_str = NoEscape('\\\\ %s' % (education_data['degreeType']))
+      is_major_gpa_str = 'Major ' if education_data['isMajorGpa'] else ''
+      gpa_str = NoEscape('\\\\ %sGPA: {\\bf %s/%s}' % (
+        is_major_gpa_str,
+        education_data['gpa'],
+        education_data['maxGpa']
+      ))
+      education_section.append(university_str)
+      education_section.append(degree_str)
+      education_section.append(gpa_str)
+
+  for i in range(0, len(resume_sections)):
+    section_data = resume_sections[i]
+    section_name = section_data['sectionName']
+    if is_special_section(section_name):
+      continue
+    with doc.create(RSectionEnv(arguments=section_name.title())) as curr_section:
+      section_items = section_data['listItems']
+      for j in range(0, len(section_items)):
+        curr_item = section_items[j]
+        date_worked_str = '%s - %s' % (curr_item['startDate'], curr_item['endDate'])
+        with doc.create(rSubsectionEnv(arguments=(
+          curr_item['primaryText'],
+          date_worked_str,
+          curr_item['secondaryText'],
+          curr_item['location'])
+        )) as curr_subsection:
+          description_items = section_items[j]['descriptionItems']
+          for k in range(0, len(description_items)):
+            description_str = NoEscape('\\item %s' % description_items[k])
+            curr_subsection.append(description_str)
+
+  if 'skills' in section_dict:
+    with doc.create(RSectionEnv(arguments='Skills')) as skills_section:
+      with doc.create(Tabular(NoEscape('@{} >{\\bfseries}l @{\\hspace{6ex}} l'))) as skills_table:
+        skills_list = section_dict['skills']['skillsList']
+        for i in range(0, len(skills_list)):
+          skill_name = skills_list[i]['listName']
+          list_items = skills_list[i]['listItems']
+          skills_str = NoEscape('%s & %s \\\\' % (skill_name, ', '.join(list_items)))
+          skills_table.append(skills_str)
+  
 
   print 'Generating pdf..'
   doc.generate_pdf()
@@ -98,9 +141,9 @@ def generate_latex():
   conn = tinys3.Connection(aws_access_id, aws_secret_id, endpoint='s3-us-west-2.amazonaws.com')
   f = open('resume.pdf', 'rb')
   print 'Uploading file..'
-  conn.upload('resume.pdf',f,'resume-gen')
+  conn.upload('resume.pdf', f, 'resume-gen')
 
-  return 'Ok'
+  return jsonify('Ok')
 
 def is_json_valid(json_data):
   json_schema_file = 'resume-json-schema.json'
@@ -111,7 +154,7 @@ def is_json_valid(json_data):
     return False
 
   try:
-      validate(json_data, schema)
+      validate(json_data, json_schema)
   except SchemaError:
     print 'Error: Invalid JSON Schema being used. Check %s.' % json_schema_file
     return False
@@ -122,6 +165,17 @@ def is_json_valid(json_data):
     print 'Error: Something unexpected happened.'
     raise
   return True
+
+def is_special_section(section_name):
+  special_sections = [
+    'header',
+    'education',
+    'skills'
+  ]
+  for i in range(0, len(special_sections)):
+    if section_name == special_sections[i]:
+      return True
+  return False
 
 def error_message(message):
   return jsonify({
