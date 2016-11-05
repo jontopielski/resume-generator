@@ -1,20 +1,27 @@
 import React from 'react'
 import EditResume from './EditResume'
+import axios from 'axios'
 import ResumeContainer from '../containers/ResumeContainer'
 import {transparentBg, floatLeft, floatRight} from '../styles'
+import { server_url } from '../components/Globals'
 
 const ResumePage = React.createClass({
   showResults(values) {
-    new Promise(resolve => {
-      setTimeout(() => {  // simulate server latency
-        window.alert(`You submitted:\n\n${JSON.stringify(values, null, 2)}`)
-        resolve()
-      }, 100)
+    console.log(values)
+    axios({
+      method: 'post',
+      url: `${server_url}/create_test`,
+      data: values
     })
+    .then((response) => {
+      console.log('Successful post!')
+    })
+    .catch((err) => console.log(err))
+    {this.render()}
   },
   render() {
     return (
-      <div className="jumbotron col-sm-12 text-center" style={transparentBg}>
+      <div className="jumbotron col-sm-12" style={transparentBg}>
         <div style={floatLeft}>
           <EditResume onSubmit={this.showResults}/>
         </div>

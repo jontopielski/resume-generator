@@ -5,7 +5,7 @@ import Home from '../components/Home'
 import PromptContainer from '../containers/PromptContainer'
 import ResumeContainer from '../containers/ResumeContainer'
 import ResumePage from '../components/ResumePage'
-import ContactForm from '../components/ContactForm'
+import HeaderForm from '../components/HeaderForm'
 import { createStore, combineReducers } from 'redux'
 import { Provider } from 'react-redux'
 import { reducer as formReducer } from 'redux-form'
@@ -22,7 +22,7 @@ const routes = (
       <Route path='/' component={Main}>
         <IndexRoute component={Home} />
         <Route path='startResume' header='Resume Header' component={PromptContainer} />
-        <Route path='form' header='Resume Form' component={ContactForm} />
+        <Route path='form' header='Resume Form' component={HeaderForm} />
         <Route path='resume' header='Resume' component={ResumeContainer} />
         <Route path='edit' header='Edit' component={ResumePage} />
       </Route>

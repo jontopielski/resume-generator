@@ -1,5 +1,5 @@
 import React from 'react'
-import ContactForm from '../components/ContactForm'
+import HeaderForm from '../components/HeaderForm'
 
 const EditResumeContainer = React.createClass({
    handleSubmit(e) {
@@ -7,7 +7,7 @@ const EditResumeContainer = React.createClass({
   },
   render() {
     return (
-      <ContactForm onSubmit={this.handleSubmit} />
+      <HeaderForm onSubmit={this.handleSubmit} />
     );
   }
 })
