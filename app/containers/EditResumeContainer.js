@@ -1,12 +1,14 @@
 import React from 'react'
+import ContactForm from '../components/ContactForm'
 
 const EditResumeContainer = React.createClass({
+   handleSubmit(e) {
+    console.log('Submitted.');
+  },
   render() {
     return (
-      <div>
-        {this.props.children}
-      </div>
-    )
+      <ContactForm onSubmit={this.handleSubmit} />
+    );
   }
 })
 
