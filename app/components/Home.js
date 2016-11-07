@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router'
 import MainContainer from './MainContainer'
-import { sample_resume_url } from './Globals'
+import { sample_resume_url } from '../config/Globals'
 
 const Home = React.createClass({
   render () {

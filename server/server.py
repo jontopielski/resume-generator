@@ -145,6 +145,8 @@ def generate_latex():
 
   return jsonify('Ok')
 
+### THIS IS CRAP DO NOT USE THIS:
+'''
 # This generates using the JSON directly created by the FE forms
 @app.route('/create_test', methods=['POST'])
 def create_latex():
@@ -207,7 +209,7 @@ def create_latex():
           curr_item['secondaryText'],
           curr_item['location'])
         )) as curr_subsection:
-          description_items = section_items[j]['descriptionItems']
+          description_items = section_items[j]['listItems']
           for k in range(0, len(description_items)):
             description_str = NoEscape('\\item %s' % description_items[k])
             curr_subsection.append(description_str)
@@ -270,6 +272,7 @@ def create_latex():
   conn.upload('resume.pdf', f, 'resume-gen')
 
   return jsonify('Ok')
+'''
 
 def is_json_valid(json_data):
   json_schema_file = 'resume-json-schema.json'

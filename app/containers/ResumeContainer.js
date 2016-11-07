@@ -1,15 +1,16 @@
-import React from 'react'
+import React, { PropTypes } from 'react'
 import Resume from '../components/Resume'
 import axios from 'axios'
-import { uploaded_resume_url } from '../components/Globals'
+import { uploaded_resume_url } from '../config/Globals'
 
 const ResumeContainer = React.createClass({
   getInitialState() {
     return {
-      isLoading: true
+      isLoading: true,
     }
   },
   componentDidMount() {
+    console.log('componentDidMount() called from ResumeContainer')
     axios.get(uploaded_resume_url)
       .then((response) => {
         if (response.status === 200) {
@@ -27,5 +28,9 @@ const ResumeContainer = React.createClass({
     )
   }
 })
+
+ResumeContainer.propTypes = {
+  resumeData: PropTypes.object.isRequired
+}
 
 export default ResumeContainer

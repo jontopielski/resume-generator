@@ -1,7 +1,7 @@
 import React from 'react'
 import Prompt from '../components/Prompt'
 import axios from 'axios'
-import { server_url } from '../components/Globals'
+import { server_url } from '../config/Globals'
 
 const PromptContainer = React.createClass({
   contextTypes: {

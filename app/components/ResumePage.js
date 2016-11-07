@@ -1,32 +1,32 @@
 import React from 'react'
-import EditResume from './EditResume'
 import axios from 'axios'
+import EditResumeContainer from '../containers/EditResumeContainer'
 import ResumeContainer from '../containers/ResumeContainer'
 import {transparentBg, floatLeft, floatRight} from '../styles'
-import { server_url } from '../components/Globals'
+import { server_url } from '../config/Globals'
 
 const ResumePage = React.createClass({
-  showResults(values) {
-    console.log(values)
-    axios({
-      method: 'post',
-      url: `${server_url}/create_test`,
-      data: values
+  getInitialState() {
+    return {
+      resumeData: {}
+    }
+  },
+  handleUpdateResumeData(sectionName, updatedData) {
+    // console.log(this.state.resumeData)
+    let updatedResumeData = this.state.resumeData
+    updatedResumeData[sectionName] = updatedData
+    this.setState({
+      resumeData: updatedResumeData
     })
-    .then((response) => {
-      console.log('Successful post!')
-    })
-    .catch((err) => console.log(err))
-    {this.render()}
   },
   render() {
     return (
       <div className="jumbotron col-sm-12" style={transparentBg}>
         <div style={floatLeft}>
-          <EditResume onSubmit={this.showResults}/>
+          <EditResumeContainer resumeData={this.state.resumeData} updateMainResumeData={this.handleUpdateResumeData} />
         </div>
         <div style={floatRight}>
-          <ResumeContainer />
+          <ResumeContainer resumeData={this.state.resumeData} />
         </div>
       </div>
     )

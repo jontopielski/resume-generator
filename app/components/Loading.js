@@ -2,7 +2,6 @@ import React, { PropTypes } from 'react'
 
 const styles = {
   container: {
-    position: 'fixed',
     left: 0,
     right: 0,
     top: 0,
@@ -11,8 +10,6 @@ const styles = {
   },
   content: {
     textAlign: 'center',
-    position: 'absolute',
-    width: '100%',
     marginTop: '30px',
   }
 }

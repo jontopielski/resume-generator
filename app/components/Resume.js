@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react'
 import Loading from './Loading'
 import MainContainer from './MainContainer'
-import { uploaded_resume_url } from '../components/Globals'
+import { uploaded_resume_url } from '../config/Globals'
 import { transparentBg } from '../styles'
 
 function Resume ({ isLoading }) {
