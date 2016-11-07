@@ -21,6 +21,17 @@ const ResumeContainer = React.createClass({
       })
       .catch((err) => console.log(err))
   },
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.shouldUpdateResume) {
+      this.setState({
+        isLoading: true
+      })
+    } else {
+      this.setState({
+        isLoading: false
+      })
+    }
+  },
   render() {
     return (
       <Resume
@@ -30,7 +41,7 @@ const ResumeContainer = React.createClass({
 })
 
 ResumeContainer.propTypes = {
-  resumeData: PropTypes.object.isRequired
+  shouldUpdateResume: PropTypes.bool.isRequired
 }
 
 export default ResumeContainer

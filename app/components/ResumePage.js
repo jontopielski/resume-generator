@@ -8,7 +8,8 @@ import { server_url } from '../config/Globals'
 const ResumePage = React.createClass({
   getInitialState() {
     return {
-      resumeData: {}
+      resumeData: {},
+      updateResume: false
     }
   },
   handleUpdateResumeData(sectionName, updatedData) {
@@ -19,14 +20,24 @@ const ResumePage = React.createClass({
       resumeData: updatedResumeData
     })
   },
+  // shouldUpdate is a boolean
+  setUpdateResume(shouldUpdate) {
+    this.setState({
+      updateResume: shouldUpdate
+    })
+  },
   render() {
     return (
       <div className="jumbotron col-sm-12" style={transparentBg}>
         <div style={floatLeft}>
-          <EditResumeContainer resumeData={this.state.resumeData} updateMainResumeData={this.handleUpdateResumeData} />
+          <EditResumeContainer
+            resumeData={this.state.resumeData}
+            updateMainResumeData={this.handleUpdateResumeData}
+            setUpdateResumeFlag={this.setUpdateResume} />
         </div>
         <div style={floatRight}>
-          <ResumeContainer resumeData={this.state.resumeData} />
+          <ResumeContainer
+            shouldUpdateResume={this.state.updateResume} />
         </div>
       </div>
     )
