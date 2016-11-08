@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react'
 import FormItem from './FormItem'
 import { transparentBg } from '../styles'
 
-function HeaderForm ({header, name, email, phoneNumber, onUpdateInfo, onSubmitInfo}) {
+function HeaderForm ({name, email, phoneNumber, onUpdateInfo}) {
   return (
     <div className="jumbotron" style={transparentBg}>
       <h2>Header</h2>

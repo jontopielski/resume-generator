@@ -86,7 +86,7 @@ def generate_latex():
     with doc.create(RSectionEnv(arguments='Education')) as education_section:
       education_data = section_dict['education']
       university_str = NoEscape('{\\bf %s} \\hfill {\\em Expected %s}' % (
-        education_data['college'],
+        education_data['school'], 
         education_data['graduationDate']
       ))
       degree_str = NoEscape('\\\\ %s' % (education_data['degreeType']))

@@ -1,17 +1,19 @@
 import React, { PropTypes } from 'react'
 import axios from 'axios'
 import HeaderFormContainer from '../containers/HeaderFormContainer'
+import EducationFormContainer from '../containers/EducationFormContainer'
 import { server_url } from '../config/Globals'
 import { space } from '../styles'
 
 function createDummyData(data) {
   let json_data = {}
   json_data['sections'] = []
-  json_data['sections'][0] = {}
-  json_data['sections'][0]['email'] = data['header']['email']
-  json_data['sections'][0]['name'] = data['header']['name']
-  json_data['sections'][0]['phoneNumber'] = data['header']['phoneNumber']
+  json_data['sections'][0] = data['header']
   json_data['sections'][0]['sectionName'] = 'header'
+
+  json_data['sections'][1] = data['education']
+  json_data['sections'][1]['sectionName'] = 'education'
+
   console.log(json_data)
   return json_data
 }
@@ -19,14 +21,24 @@ function createDummyData(data) {
 const EditResumeContainer = React.createClass({
   getInitialState() {
     return {
-      headerData: {}
+      headerData: {},
+      educationData: {}
     }
   },
-  handleUpdateContainerData(data) {
-    this.setState({
-      headerData: data
-    })
-    this.props.updateMainResumeData('header', this.state.headerData)
+  handleUpdateContainerData(section, data) {
+    if (section === 'header') {
+      this.setState({
+        headerData: data
+      })
+      this.props.updateMainResumeData(section, this.state.headerData)
+    } else if (section === 'education') {
+      this.setState({
+        educationData: data
+      })
+      this.props.updateMainResumeData(section, this.state.educationData)
+    } else {
+      console.log('No valid section found for data update.')
+    }
   },
   handleSubmit(e) {
     e.preventDefault()
@@ -49,6 +61,11 @@ const EditResumeContainer = React.createClass({
         <div>
           <HeaderFormContainer
             headerData={this.state.headerData}
+            handleUpdateContainerData={this.handleUpdateContainerData} />
+        </div>
+        <div>
+          <EducationFormContainer
+            headerData={this.state.educationData}
             handleUpdateContainerData={this.handleUpdateContainerData} />
         </div>
         <div style={space}>

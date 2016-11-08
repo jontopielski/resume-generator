@@ -12,7 +12,7 @@ const HeaderFormContainer = React.createClass({
   },
   handleUpdateInfo (e) {
     this.setState({ [e.target.name]: e.target.value })
-    this.props.handleUpdateContainerData(this.state)
+    this.props.handleUpdateContainerData('header', this.state)
   },
   render () {
     return (

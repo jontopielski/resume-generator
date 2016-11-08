@@ -10,7 +10,6 @@ const ResumeContainer = React.createClass({
     }
   },
   componentDidMount() {
-    console.log('componentDidMount() called from ResumeContainer')
     axios.get(uploaded_resume_url)
       .then((response) => {
         if (response.status === 200) {
