@@ -2,7 +2,7 @@ import React from 'react'
 import axios from 'axios'
 import EditResumeContainer from '../containers/EditResumeContainer'
 import ResumeContainer from '../containers/ResumeContainer'
-import {transparentBg, floatLeft, floatRight} from '../styles'
+import { transparentBg, floatLeft, floatRight, space} from '../styles'
 import { server_url } from '../config/Globals'
 
 const ResumePage = React.createClass({
@@ -13,7 +13,6 @@ const ResumePage = React.createClass({
     }
   },
   handleUpdateResumeData(sectionName, updatedData) {
-    // console.log(this.state.resumeData)
     let updatedResumeData = this.state.resumeData
     updatedResumeData[sectionName] = updatedData
     this.setState({

@@ -5,13 +5,16 @@ function FormItem ({ onUpdateField, name, value, placeholder, type }) {
   return type === 'checkbox' ? 
     <div className='form-group'>
       <div className='col-sm-12'>
-        <label style={mediumSpace}>{placeholder}</label>
-        <input
-          onChange={onUpdateField}
-          placeholder={placeholder ? placeholder : name}
-          name={name}
-          type={type ? type : 'text'}
-          value={value} />
+        <label className='' style={mediumSpace}>
+          <input
+            onChange={onUpdateField}
+            placeholder={placeholder ? placeholder : name}
+            name={name}
+            type={type ? type : 'text'}
+            value={value} />
+          {' ' + placeholder}
+        </label>
+        
       </div>
     </div>
   : (

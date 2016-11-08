@@ -6,13 +6,18 @@ import { server_url } from '../config/Globals'
 import { space } from '../styles'
 
 function createDummyData(data) {
-  let json_data = {}
-  json_data['sections'] = []
-  json_data['sections'][0] = data['header']
-  json_data['sections'][0]['sectionName'] = 'header'
+  const json_data = {}
 
-  json_data['sections'][1] = data['education']
-  json_data['sections'][1]['sectionName'] = 'education'
+  if (data['header']) {
+    json_data['sections'] = []
+    json_data['sections'][0] = data['header']
+    json_data['sections'][0]['sectionName'] = 'header'
+  }
+
+  if (data['education']) {
+    json_data['sections'][1] = data['education']
+    json_data['sections'][1]['sectionName'] = 'education'
+  }
 
   console.log(json_data)
   return json_data
@@ -29,13 +34,11 @@ const EditResumeContainer = React.createClass({
     if (section === 'header') {
       this.setState({
         headerData: data
-      })
-      this.props.updateMainResumeData(section, this.state.headerData)
+      }, () => this.props.updateMainResumeData(section, this.state.headerData))
     } else if (section === 'education') {
       this.setState({
         educationData: data
-      })
-      this.props.updateMainResumeData(section, this.state.educationData)
+      }, () => this.props.updateMainResumeData(section, this.state.educationData))
     } else {
       console.log('No valid section found for data update.')
     }
@@ -58,17 +61,17 @@ const EditResumeContainer = React.createClass({
   render() {
     return (
       <div className='col-sm-12'>
-        <div>
+        <div className='col-sm-12'>
           <HeaderFormContainer
             headerData={this.state.headerData}
             handleUpdateContainerData={this.handleUpdateContainerData} />
         </div>
-        <div>
+        <div className='col-sm-12'>
           <EducationFormContainer
             headerData={this.state.educationData}
             handleUpdateContainerData={this.handleUpdateContainerData} />
         </div>
-        <div style={space}>
+        <div className='col-sm-12'>
           <button
             className='btn btn-block btn-success'
             style={space}
