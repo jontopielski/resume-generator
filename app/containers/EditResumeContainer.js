@@ -1,25 +1,50 @@
 import React, { PropTypes } from 'react'
 import axios from 'axios'
-import HeaderFormContainer from '../containers/HeaderFormContainer'
-import EducationFormContainer from '../containers/EducationFormContainer'
+import HeaderFormContainer from './HeaderFormContainer'
+import EducationFormContainer from './EducationFormContainer'
+import MultiFormContainer from './MultiFormContainer'
+import SectionHeader from '../components/SectionHeader'
 import { server_url } from '../config/Globals'
 import { space } from '../styles'
 
 function createDummyData(data) {
   const json_data = {}
 
+  json_data['sections'] = []
+
+  let index = 0
+
   if (data['header']) {
-    json_data['sections'] = []
-    json_data['sections'][0] = data['header']
-    json_data['sections'][0]['sectionName'] = 'header'
+    json_data['sections'][index] = data['header']
+    json_data['sections'][index]['sectionName'] = 'header'
+    index++
   }
 
   if (data['education']) {
-    json_data['sections'][1] = data['education']
-    json_data['sections'][1]['sectionName'] = 'education'
+    json_data['sections'][index] = data['education']
+    json_data['sections'][index]['sectionName'] = 'education'
+    index++
   }
 
-  console.log(json_data)
+  if (data['experience']) {
+    json_data['sections'][index] = data['experience']
+    json_data['sections'][index]['sectionName'] = 'experience'
+    index++
+  }
+
+  if (data['projects']) {
+    json_data['sections'][index] = data['projects']
+    json_data['sections'][index]['sectionName'] = 'projects'
+    index++
+  }
+
+  if (data['coursework']) {
+    json_data['sections'][index] = data['coursework']
+    json_data['sections'][index]['sectionName'] = 'coursework'
+    index++
+  }
+
+
   return json_data
 }
 
@@ -27,7 +52,10 @@ const EditResumeContainer = React.createClass({
   getInitialState() {
     return {
       headerData: {},
-      educationData: {}
+      educationData: {},
+      experienceData: {},
+      projectsData: {},
+      courseworkData: {}
     }
   },
   handleUpdateContainerData(section, data) {
@@ -39,6 +67,18 @@ const EditResumeContainer = React.createClass({
       this.setState({
         educationData: data
       }, () => this.props.updateMainResumeData(section, this.state.educationData))
+    } else if (section === 'experience') {
+      this.setState({
+        experienceData: data
+      }, () => this.props.updateMainResumeData(section, this.state.experienceData))
+    } else if (section === 'projects') {
+      this.setState({
+        projectsData: data
+      }, () => this.props.updateMainResumeData(section, this.state.projectsData))
+    } else if (section === 'coursework') {
+      this.setState({
+        courseworkData: data
+      }, () => this.props.updateMainResumeData(section, this.state.courseworkData))
     } else {
       console.log('No valid section found for data update.')
     }
@@ -61,23 +101,36 @@ const EditResumeContainer = React.createClass({
   render() {
     return (
       <div className='col-sm-12'>
-        <div className='col-sm-12'>
+        <SectionHeader sectionName={'Header'}>
           <HeaderFormContainer
-            headerData={this.state.headerData}
             handleUpdateContainerData={this.handleUpdateContainerData} />
-        </div>
-        <div className='col-sm-12'>
+        </SectionHeader>
+        <SectionHeader sectionName={'Education'}>
           <EducationFormContainer
-            headerData={this.state.educationData}
             handleUpdateContainerData={this.handleUpdateContainerData} />
-        </div>
+        </SectionHeader>
+        <SectionHeader sectionName={'Experience'}>
+          <MultiFormContainer
+            sectionName={'Experience'}
+            handleUpdateContainerData={this.handleUpdateContainerData} />
+        </SectionHeader>
+        <SectionHeader sectionName={'Projects'}>
+          <MultiFormContainer
+            sectionName={'Projects'}
+            handleUpdateContainerData={this.handleUpdateContainerData} />
+        </SectionHeader>
+        <SectionHeader sectionName={'Coursework'}>
+          <MultiFormContainer
+            sectionName={'Coursework'}
+            handleUpdateContainerData={this.handleUpdateContainerData} />
+        </SectionHeader>
         <div className='col-sm-12'>
           <button
             className='btn btn-block btn-success'
             style={space}
             type="submit"
             onClick={this.handleSubmit}>
-              Update
+              Update Resume
           </button>
         </div>
       </div>

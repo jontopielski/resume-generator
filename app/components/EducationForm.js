@@ -4,9 +4,7 @@ import { transparentBg, space } from '../styles'
 
 function EducationForm ({school, graduationDate, degreeType, gpa, maxGpa, isMajorGpa, onUpdateInfo, onUpdateCheckbox}) {
     return (
-    <div className="jumbotron" style={transparentBg}>
-      <h2>Education</h2>
-      <hr/>
+    <div style={transparentBg}>
       <div className="col-sm-12">
         <form>
           <FormItem

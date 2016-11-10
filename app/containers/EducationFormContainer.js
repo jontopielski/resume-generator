@@ -19,18 +19,6 @@ const EducationFormContainer = React.createClass({
   },
   handleUpdateCheckbox(e) {
     const value = e.target.checked;
-    // Copy the object so we don't mutate the old state.
-    // (This requires an Object.assign polyfill):
-    // const checked = Object.assign({}, this.state.checked)
-    // console.log('e.target.value: ' + value)
-    // console.log('checked[value]: ' + checked[value])
-    // console.log('current state of isMajorGpa: ' + this.state.isMajorGpa)
-    // if (!this.state.isMajorGpa) {
-    //   checked[value] = true;
-    // } else {
-    //   checked[value] = false;
-    // }
-    // console.log(this.state)
     this.setState({
       isMajorGpa: value
     }, () => this.props.handleUpdateContainerData('education', this.state));

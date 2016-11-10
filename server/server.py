@@ -64,7 +64,7 @@ def generate_latex():
   geometry_options = 'left=0.25in,top=0.25in,right=0.25in,bottom=0.25in'
   doc.preamble.append(Package('geometry', options=geometry_options))
 
-  resume_sections = json_body['sections']
+  resume_sections = json_body['sections'] if 'sections' in json_body else []
 
   section_dict = {}
 
@@ -86,20 +86,23 @@ def generate_latex():
   if 'education' in section_dict:
     with doc.create(RSectionEnv(arguments='Education')) as education_section:
       education_data = section_dict['education']
-      university_str = NoEscape('{\\bf %s} \\hfill {\\em Expected %s}' % (
+      expected_grad_str = ('Expected %s' % education_data['graduationDate']) if education_data['graduationDate'] != '' else ''
+      university_str = NoEscape('{\\bf %s} \\hfill {\\em %s}' % (
         education_data['school'], 
-        education_data['graduationDate']
+        expected_grad_str
       ))
       degree_str = NoEscape('\\\\ %s' % (education_data['degreeType']))
-      is_major_gpa_str = 'Major ' if education_data['isMajorGpa'] else ''
-      gpa_str = NoEscape('\\\\ %sGPA: {\\bf %s/%s}' % (
-        is_major_gpa_str,
-        education_data['gpa'],
-        education_data['maxGpa']
-      ))
       education_section.append(university_str)
       education_section.append(degree_str)
-      education_section.append(gpa_str)
+      if 'gpa' in education_data and education_data['gpa'] != '':
+        is_major_gpa_str = 'Major ' if education_data['isMajorGpa'] else ''
+        max_gpa_str = ('/%s' % education_data['maxGpa']) if education_data['maxGpa'] != '' else ''
+        gpa_str = NoEscape('\\\\ %sGPA: {\\bf %s%s}' % (
+          is_major_gpa_str,
+          education_data['gpa'],
+          max_gpa_str
+        ))
+        education_section.append(gpa_str)
 
   for i in range(0, len(resume_sections)):
     section_data = resume_sections[i]

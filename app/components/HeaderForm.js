@@ -4,9 +4,7 @@ import { transparentBg } from '../styles'
 
 function HeaderForm ({name, email, phoneNumber, onUpdateInfo}) {
   return (
-    <div className="jumbotron" style={transparentBg}>
-      <h2>Header</h2>
-      <hr/>
+    <div style={transparentBg}>
       <div className="col-sm-12">
         <form>
           <FormItem

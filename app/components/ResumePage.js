@@ -13,7 +13,7 @@ const ResumePage = React.createClass({
     }
   },
   handleUpdateResumeData(sectionName, updatedData) {
-    let updatedResumeData = this.state.resumeData
+    const updatedResumeData = this.state.resumeData
     updatedResumeData[sectionName] = updatedData
     this.setState({
       resumeData: updatedResumeData
