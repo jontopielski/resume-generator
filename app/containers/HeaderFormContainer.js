@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react'
 import axios from 'axios'
 import HeaderForm from '../components/HeaderForm'
+import { resume_bucket_url } from '../config/Globals'
 
 const HeaderFormContainer = React.createClass({
   getInitialState () {
@@ -11,6 +12,33 @@ const HeaderFormContainer = React.createClass({
       address: '',
       website: ''
     }
+  },
+  componentDidMount() {
+    axios.get(`${resume_bucket_url}/${this.props.resumeHashId}/resume.json`)
+      .then((response) => {
+        console.log('resume.json from HeaderFormContainer: ')
+        console.log(response.data)
+        if (response.status === 200) {
+          if (response.data['sections']) {
+            const filtered_data = response.data['sections'].filter((entry) =>
+              entry["sectionName"] == "header"
+            )
+            if (filtered_data.length == 1) {
+              const header_data = filtered_data[0]
+              this.setState({
+                name: header_data['name'],
+                email: header_data['email'],
+                phoneNumber: header_data['phoneNumber'],
+                address: header_data['address'],
+                website: header_data['website']
+              }, () => this.props.handleUpdateContainerData('header', this.state))
+            }
+          }
+        }
+      })
+      .catch((err) =>
+        console.log(err)
+      )
   },
   handleUpdateInfo (e) {
     this.setState(
@@ -32,7 +60,8 @@ const HeaderFormContainer = React.createClass({
 });
 
 HeaderFormContainer.propTypes = {
-  handleUpdateContainerData: PropTypes.func.isRequired
+  handleUpdateContainerData: PropTypes.func.isRequired,
+  resumeHashId: PropTypes.string.isRequired,
 }
 
 export default HeaderFormContainer

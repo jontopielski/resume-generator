@@ -1,19 +1,20 @@
 import React, { PropTypes } from 'react'
 import Loading from './Loading'
-import { uploaded_resume_url } from '../config/Globals'
+import { uploaded_resume_url, resume_bucket_url } from '../config/Globals'
 import { transparentBg, resumeStyle } from '../styles'
 
-function Resume ({ isLoading }) {
+function Resume ({ isLoading, resumeHashId }) {
   return isLoading ? <Loading /> :
   (
     <div style={ resumeStyle }>
-      <embed src={uploaded_resume_url} width="100%" height="100%" />
+      <embed src={resume_bucket_url + `/${resumeHashId}/resume.pdf`} width="100%" height="100%" />
     </div>
   )
 }
 
 Resume.propTypes = {
-  isLoading: PropTypes.bool.isRequired
+  isLoading: PropTypes.bool.isRequired,
+  resumeHashId: PropTypes.string.isRequired
 }
 
 export default Resume

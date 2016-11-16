@@ -34,13 +34,15 @@ const ResumeContainer = React.createClass({
   render() {
     return (
       <Resume
-        isLoading={this.state.isLoading} />
+        isLoading={this.state.isLoading}
+        resumeHashId={this.props.resumeHashId} />
     )
   }
 })
 
 ResumeContainer.propTypes = {
-  shouldUpdateResume: PropTypes.bool.isRequired
+  shouldUpdateResume: PropTypes.bool.isRequired,
+  resumeHashId: PropTypes.string.isRequired
 }
 
 export default ResumeContainer

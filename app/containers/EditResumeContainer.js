@@ -45,7 +45,6 @@ function formatJsonData(data) {
     index++
   }
 
-
   return json_data
 }
 
@@ -90,7 +89,7 @@ const EditResumeContainer = React.createClass({
     this.props.setUpdateResumeFlag(true)
     axios({
       method: 'post',
-      url: `${server_url}/generate`,
+      url: `${server_url}/generate?hashId=${this.props.resumeHashId}`,
       data: formatJsonData(this.props.resumeData)
     })
     .then((response) => {
@@ -100,30 +99,37 @@ const EditResumeContainer = React.createClass({
     .catch((err) => console.log(err))
   },
   render() {
+    console.log('EditResumeContainer resumeData:')
+    console.log(this.props.resumeData)
     return (
       <div className='col-sm-12'>
         <SectionHeader sectionName={'Header'}>
           <HeaderFormContainer
-            handleUpdateContainerData={this.handleUpdateContainerData} />
+            handleUpdateContainerData={this.handleUpdateContainerData}
+            resumeHashId={this.props.resumeHashId} />
         </SectionHeader>
         <SectionHeader sectionName={'Education'}>
           <EducationFormContainer
-            handleUpdateContainerData={this.handleUpdateContainerData} />
+            handleUpdateContainerData={this.handleUpdateContainerData}
+            resumeHashId={this.props.resumeHashId} />
         </SectionHeader>
         <SectionHeader sectionName={'Experience'}>
           <MultiFormContainer
             sectionName={'Experience'}
-            handleUpdateContainerData={this.handleUpdateContainerData} />
+            handleUpdateContainerData={this.handleUpdateContainerData}
+            resumeHashId={this.props.resumeHashId} />
         </SectionHeader>
         <SectionHeader sectionName={'Projects'}>
           <MultiFormContainer
             sectionName={'Projects'}
-            handleUpdateContainerData={this.handleUpdateContainerData} />
+            handleUpdateContainerData={this.handleUpdateContainerData}
+            resumeHashId={this.props.resumeHashId} />
         </SectionHeader>
         <SectionHeader sectionName={'Coursework'}>
           <MultiFormContainer
             sectionName={'Coursework'}
-            handleUpdateContainerData={this.handleUpdateContainerData} />
+            handleUpdateContainerData={this.handleUpdateContainerData}
+            resumeHashId={this.props.resumeHashId} />
         </SectionHeader>
         <div className='col-sm-12'>
           <button
@@ -141,6 +147,7 @@ const EditResumeContainer = React.createClass({
 
 EditResumeContainer.propTypes = {
   resumeData: PropTypes.object.isRequired,
+  resumeHashId: PropTypes.string.isRequired,
   updateMainResumeData: PropTypes.func.isRequired,
   setUpdateResumeFlag: PropTypes.func.isRequired
 }

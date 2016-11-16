@@ -47,21 +47,29 @@ def fill_document(doc):
 @app.route('/hash', methods=['GET'])
 def create_hash():
   print 'Creating new hash code..'
-  hash_code = ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(15))
+  hash_code = ''.join(random.SystemRandom().choice(string.ascii_letters + string.digits) for _ in range(16))
   print 'Created new hash code: %s' % hash_code
-  # with open('resume.json', 'wrb') as json_file:
-  #   json.dump({}, json_file)
+  with open('resume.json', 'wrb') as json_file:
+    json.dump({}, json_file)
 
-  # populate_aws_credentials()
-  # conn = tinys3.Connection(aws_access_id, aws_secret_id, endpoint='s3-us-west-2.amazonaws.com')
-  # json_file = open('resume.json', 'rb')
-  # conn.upload('resume.json', json_file, 'resume-gen/resumes/%s' % hash_code)
-  # json_file.close()
+  populate_aws_credentials()
+  conn = tinys3.Connection(aws_access_id, aws_secret_id, endpoint='s3-us-west-2.amazonaws.com')
+  json_file = open('resume.json', 'rb')
+  empty_resume_file = open('empty-resume.pdf', 'rb')
+  conn.upload('resume.pdf', empty_resume_file, 'resume-gen/resumes/%s' % hash_code)
+  conn.upload('resume.json', json_file, 'resume-gen/resumes/%s' % hash_code)
+  json_file.close()
 
   return jsonify(hash_code)
 
 @app.route('/generate', methods=['POST'])
 def generate_latex():
+
+  if 'hashId' not in request.args:
+      return error_message('hashId missing from request arguments.')
+
+  hash_code = request.args['hashId']
+
   try:
     print 'Attempting to load json body..'
     json_body = json_loads_byteified(json.dumps(request.get_json(), ensure_ascii=False))
@@ -169,10 +177,6 @@ def generate_latex():
   doc.generate_pdf()
   doc.generate_tex()
 
-
-  # rand_str = ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(10))
-  rand_str = 'abc123'
-
   with open('resume.json', 'wrb') as json_file:
     json.dump(json_body, json_file)
 
@@ -182,9 +186,9 @@ def generate_latex():
   tex_file = open('resume.tex', 'rb')
   json_file = open('resume.json', 'rb')
   print 'Uploading file..'
-  conn.upload('resume.pdf', pdf_file, 'resume-gen/resumes/%s' % rand_str)
-  conn.upload('resume.tex', tex_file, 'resume-gen/resumes/%s' % rand_str)
-  conn.upload('resume.json', json_file, 'resume-gen/resumes/%s' % rand_str)
+  conn.upload('resume.pdf', pdf_file, 'resume-gen/resumes/%s' % hash_code)
+  conn.upload('resume.tex', tex_file, 'resume-gen/resumes/%s' % hash_code)
+  conn.upload('resume.json', json_file, 'resume-gen/resumes/%s' % hash_code)
 
   pdf_file.close()
   tex_file.close()

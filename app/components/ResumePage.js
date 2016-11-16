@@ -3,21 +3,19 @@ import axios from 'axios'
 import EditResumeContainer from '../containers/EditResumeContainer'
 import ResumeContainer from '../containers/ResumeContainer'
 import { transparentBg, floatLeft, floatRight, space, resumePageStyle } from '../styles'
-import { server_url } from '../config/Globals'
+import { server_url, resume_bucket_url } from '../config/Globals'
 
 const ResumePage = React.createClass({
   getInitialState() {
+    const resumeHash = this.props.params.hashId
     return {
       resumeData: {},
       updateResume: false,
-      hashId: ''
+      hashId: resumeHash
     }
   },
-  componentDidMount() {
-    console.log('Setting hashId: ' + this.props.params.hashId)
-    this.setState({
-      hashId: this.props.params.hashId
-    })
+  componentWillMount() {
+    console.log('cwm')
   },
   handleUpdateResumeData(sectionName, updatedData) {
     const updatedResumeData = this.state.resumeData
@@ -39,11 +37,13 @@ const ResumePage = React.createClass({
           <EditResumeContainer
             resumeData={this.state.resumeData}
             updateMainResumeData={this.handleUpdateResumeData}
-            setUpdateResumeFlag={this.setUpdateResume} />
+            setUpdateResumeFlag={this.setUpdateResume}
+            resumeHashId={this.state.hashId} />
         </div>
         <div style={floatRight}>
           <ResumeContainer
-            shouldUpdateResume={this.state.updateResume} />
+            shouldUpdateResume={this.state.updateResume}
+            resumeHashId={this.state.hashId} />
         </div>
       </div>
     )
