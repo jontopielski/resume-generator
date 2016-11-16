@@ -4,12 +4,13 @@ import HeaderFormContainer from './HeaderFormContainer'
 import EducationFormContainer from './EducationFormContainer'
 import MultiFormContainer from './MultiFormContainer'
 import SectionHeader from '../components/SectionHeader'
-import { server_url } from '../config/Globals'
+import { server_url, current_version } from '../config/Globals'
 import { space } from '../styles'
 
-function createDummyData(data) {
+function formatJsonData(data) {
   const json_data = {}
 
+  json_data['version'] = current_version
   json_data['sections'] = []
 
   let index = 0
@@ -90,10 +91,10 @@ const EditResumeContainer = React.createClass({
     axios({
       method: 'post',
       url: `${server_url}/generate`,
-      data: createDummyData(this.props.resumeData)
+      data: formatJsonData(this.props.resumeData)
     })
     .then((response) => {
-      console.log('Successful post!')
+      console.log(response)
       this.props.setUpdateResumeFlag(false)
     })
     .catch((err) => console.log(err))

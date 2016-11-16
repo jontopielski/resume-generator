@@ -1,15 +1,14 @@
 import React, { PropTypes } from 'react'
 import Loading from './Loading'
-import MainContainer from './MainContainer'
 import { uploaded_resume_url } from '../config/Globals'
-import { transparentBg } from '../styles'
+import { transparentBg, resumeStyle } from '../styles'
 
 function Resume ({ isLoading }) {
   return isLoading ? <Loading /> :
   (
-    <MainContainer>
-      <embed src={uploaded_resume_url} width="900px" height="1200px" />
-    </MainContainer>
+    <div style={ resumeStyle }>
+      <embed src={uploaded_resume_url} width="100%" height="100%" />
+    </div>
   )
 }
 

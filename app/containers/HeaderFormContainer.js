@@ -7,7 +7,9 @@ const HeaderFormContainer = React.createClass({
     return {
       name: '',
       email: '',
-      phoneNumber: ''
+      phoneNumber: '',
+      address: '',
+      website: ''
     }
   },
   handleUpdateInfo (e) {
@@ -22,7 +24,9 @@ const HeaderFormContainer = React.createClass({
         onUpdateInfo={this.handleUpdateInfo}
         name={this.state.name}
         email={this.state.email}
-        phoneNumber={this.state.phoneNumber} />
+        phoneNumber={this.state.phoneNumber}
+        address={this.state.address}
+        website={this.state.website} />
     )
   }
 });

@@ -1,9 +1,10 @@
 import React from 'react'
+import { maxHeight } from '../styles'
 
 const Main = React.createClass({
 	render() {
     return (
-      <div>
+      <div style={maxHeight}>
         {this.props.children}
       </div>
     )

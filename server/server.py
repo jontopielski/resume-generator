@@ -3,7 +3,7 @@ from pylatex import Document, Section, Subsection, Command, Package, UnsafeComma
 from pylatex.base_classes import Environment
 from pylatex.utils import italic, NoEscape
 from jsonschema import validate, ValidationError, SchemaError
-import json
+import random, string, json
 import tinys3
 import sys, fileinput
 
@@ -44,9 +44,26 @@ def fill_document(doc):
       with doc.create(Subsection('A subsection')):
           doc.append('Also some crazy characters: $&#{}')
 
+@app.route('/hash', methods=['GET'])
+def create_hash():
+  print 'Creating new hash code..'
+  hash_code = ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(15))
+  print 'Created new hash code: %s' % hash_code
+  # with open('resume.json', 'wrb') as json_file:
+  #   json.dump({}, json_file)
+
+  # populate_aws_credentials()
+  # conn = tinys3.Connection(aws_access_id, aws_secret_id, endpoint='s3-us-west-2.amazonaws.com')
+  # json_file = open('resume.json', 'rb')
+  # conn.upload('resume.json', json_file, 'resume-gen/resumes/%s' % hash_code)
+  # json_file.close()
+
+  return jsonify(hash_code)
+
 @app.route('/generate', methods=['POST'])
 def generate_latex():
   try:
+    print 'Attempting to load json body..'
     json_body = json_loads_byteified(json.dumps(request.get_json(), ensure_ascii=False))
   except:
     return error_message('Unable to convert json in request body to readable format.')
@@ -67,18 +84,30 @@ def generate_latex():
   resume_sections = json_body['sections'] if 'sections' in json_body else []
 
   section_dict = {}
-
   for i in range(0, len(resume_sections)):
     section_dict[resume_sections[i]['sectionName']] = resume_sections[i]
 
   if 'header' in section_dict:
     header_data = section_dict['header']
     # TODO: Perform phone number and email validation on FE
-    subheader_str = NoEscape('(%s)~$\cdot$~%s~$\cdot$~%s \\\\ %s' % (
-      header_data['phoneNumber'][0:3],
-      header_data['phoneNumber'][3:6],
-      header_data['phoneNumber'][6:10],
-      header_data['email']
+    phone_number = header_data['phoneNumber']
+    phone_number_first_part = phone_number[0:3] if len(phone_number) >= 3 else phone_number[0:]
+    phone_number_second_part = phone_number[3:6] if len(phone_number) >= 6 else phone_number[3:]
+    phone_number_third_part = phone_number[6:10] if len(phone_number) >= 10 else phone_number[6:]
+    # phone_number_str = ('(%s)~$\cdot$~%s~$\cdot$~%s' % (
+    phone_number_str = ('(%s) %s - %s \\\\' % (
+      phone_number_first_part,
+      phone_number_second_part,
+      phone_number_third_part
+    ))
+    address_str = ('%s \\\\' % header_data['address']) if header_data['address'] != '' else ''
+    website_str = ('%s \\\\' % header_data['website']) if header_data['website'] != '' else ''
+    email_str = ('%s' % header_data['email']) if header_data['email'] != '' else ''
+    subheader_str = NoEscape('%s %s %s %s' % (
+      address_str,
+      phone_number_str,
+      website_str,
+      email_str,
     ))
     doc.preamble.append(Command('name', header_data['name']))
     doc.preamble.append(Command('address', subheader_str))
@@ -140,12 +169,26 @@ def generate_latex():
   doc.generate_pdf()
   doc.generate_tex()
 
-  populate_aws_credentials()
 
+  # rand_str = ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(10))
+  rand_str = 'abc123'
+
+  with open('resume.json', 'wrb') as json_file:
+    json.dump(json_body, json_file)
+
+  populate_aws_credentials()
   conn = tinys3.Connection(aws_access_id, aws_secret_id, endpoint='s3-us-west-2.amazonaws.com')
-  f = open('resume.pdf', 'rb')
+  pdf_file = open('resume.pdf', 'rb')
+  tex_file = open('resume.tex', 'rb')
+  json_file = open('resume.json', 'rb')
   print 'Uploading file..'
-  conn.upload('resume.pdf', f, 'resume-gen')
+  conn.upload('resume.pdf', pdf_file, 'resume-gen/resumes/%s' % rand_str)
+  conn.upload('resume.tex', tex_file, 'resume-gen/resumes/%s' % rand_str)
+  conn.upload('resume.json', json_file, 'resume-gen/resumes/%s' % rand_str)
+
+  pdf_file.close()
+  tex_file.close()
+  json_file.close()
 
   return jsonify('Ok')
 
