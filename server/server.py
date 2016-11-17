@@ -144,20 +144,22 @@ def generate_latex():
   for i in range(0, len(resume_sections)):
     section_data = resume_sections[i]
     section_name = section_data['sectionName']
-    if is_special_section(section_name):
+    if is_special_section(section_name) or len(section_data['listItems']) == 0 or section_data['sectionCount'] == 0:
       continue
     with doc.create(RSectionEnv(arguments=section_name.title())) as curr_section:
       section_items = section_data['listItems']
       for j in range(0, len(section_items)):
         curr_item = section_items[j]
-        date_worked_str = '%s - %s' % (curr_item['startDate'], curr_item['endDate'])
+        start_date_str = ('%s' % curr_item['startDate']) if curr_item['startDate'] != '' else ''
+        end_date_str = (' - %s' % curr_item['endDate']) if curr_item['endDate'] != '' else ''
+        date_worked_str = ('%s%s' % (start_date_str, end_date_str))
         with doc.create(rSubsectionEnv(arguments=(
           curr_item['primaryText'],
           date_worked_str,
           curr_item['secondaryText'],
           curr_item['location'])
         )) as curr_subsection:
-          description_items = section_items[j]['descriptionItems']
+          description_items = section_items[j]['descriptionItems'] if len(section_items[j]['descriptionItems']) > 0 else []
           for k in range(0, len(description_items)):
             description_str = NoEscape('\\item %s' % description_items[k])
             curr_subsection.append(description_str)

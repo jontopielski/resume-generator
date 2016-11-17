@@ -14,9 +14,6 @@ const ResumePage = React.createClass({
       hashId: resumeHash
     }
   },
-  componentWillMount() {
-    console.log('cwm')
-  },
   handleUpdateResumeData(sectionName, updatedData) {
     const updatedResumeData = this.state.resumeData
     updatedResumeData[sectionName] = updatedData

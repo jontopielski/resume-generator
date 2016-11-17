@@ -16,8 +16,6 @@ const HeaderFormContainer = React.createClass({
   componentDidMount() {
     axios.get(`${resume_bucket_url}/${this.props.resumeHashId}/resume.json`)
       .then((response) => {
-        console.log('resume.json from HeaderFormContainer: ')
-        console.log(response.data)
         if (response.status === 200) {
           if (response.data['sections']) {
             const filtered_data = response.data['sections'].filter((entry) =>

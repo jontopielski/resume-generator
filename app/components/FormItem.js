@@ -27,6 +27,7 @@ function FormItem ({ onUpdateField, name, value, placeholder, type }) {
           placeholder={placeholder ? placeholder : name}
           name={name}
           type={type ? type : 'text'}
+          maxLength={150}
           value={value} />
       </div>
     </div>

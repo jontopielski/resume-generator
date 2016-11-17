@@ -85,7 +85,6 @@ const EditResumeContainer = React.createClass({
   },
   handleSubmit(e) {
     e.preventDefault()
-    console.log(this.props.resumeData)
     this.props.setUpdateResumeFlag(true)
     axios({
       method: 'post',
@@ -93,14 +92,11 @@ const EditResumeContainer = React.createClass({
       data: formatJsonData(this.props.resumeData)
     })
     .then((response) => {
-      console.log(response)
       this.props.setUpdateResumeFlag(false)
     })
     .catch((err) => console.log(err))
   },
   render() {
-    console.log('EditResumeContainer resumeData:')
-    console.log(this.props.resumeData)
     return (
       <div className='col-sm-12'>
         <SectionHeader sectionName={'Header'}>

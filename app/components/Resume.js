@@ -4,6 +4,7 @@ import { uploaded_resume_url, resume_bucket_url } from '../config/Globals'
 import { transparentBg, resumeStyle } from '../styles'
 
 function Resume ({ isLoading, resumeHashId }) {
+  // console.log('Re-rendering Resume')
   return isLoading ? <Loading /> :
   (
     <div style={ resumeStyle }>
