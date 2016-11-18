@@ -49,8 +49,19 @@ def create_hash():
   print 'Creating new hash code..'
   hash_code = ''.join(random.SystemRandom().choice(string.ascii_letters + string.digits) for _ in range(16))
   print 'Created new hash code: %s' % hash_code
+
+
+  return jsonify(hash_code)
+
+@app.route('/initialize', methods=['POST'])
+def initialize_user_data():
+  if 'hashId' not in request.args:
+      return error_message('hashId missing from request arguments.')
+
+  hash_code = request.args['hashId']
+
   with open('resume.json', 'wrb') as json_file:
-    json.dump({}, json_file)
+  json.dump({}, json_file)
 
   populate_aws_credentials()
   conn = tinys3.Connection(aws_access_id, aws_secret_id, endpoint='s3-us-west-2.amazonaws.com')
@@ -60,7 +71,7 @@ def create_hash():
   conn.upload('resume.json', json_file, 'resume-gen/resumes/%s' % hash_code)
   json_file.close()
 
-  return jsonify(hash_code)
+  return jsonify('Ok')
 
 @app.route('/generate', methods=['POST'])
 def generate_latex():

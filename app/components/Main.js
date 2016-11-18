@@ -1,5 +1,6 @@
 import React from 'react'
 import { maxHeight } from '../styles'
+import LandingPage from './LandingPage'
 
 const Main = React.createClass({
 	render() {

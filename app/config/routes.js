@@ -1,7 +1,7 @@
 import React from 'react'
 import { Router, Route, browserHistory, hashHistory, IndexRoute } from 'react-router'
 import Main from '../components/Main'
-import Home from '../components/Home'
+import LandingPage from '../components/LandingPage'
 import PromptContainer from '../containers/PromptContainer'
 import ResumeContainer from '../containers/ResumeContainer'
 import ResumePage from '../components/ResumePage'
@@ -17,17 +17,15 @@ const reducer = combineReducers(reducers)
 const store = createStore(reducer)
 
 const routes = (
-  <Provider store={store}>
-    <Router history={browserHistory}>
-      <Route path='/' component={Main}>
-        <IndexRoute component={Home} />
-        <Route path='startResume' header='Resume Header' component={PromptContainer} />
-        <Route path='resume' header='Resume' component={ResumeContainer} />
-        <Route path='edit/:hashId' header='Edit' component={ResumePage} />
-        <Route path='edit' header='Edit' component={ErrorPage} />
-      </Route>
-    </Router>
-  </Provider>
+  <Router history={browserHistory}>
+    <Route path='/' component={Main}>
+      <IndexRoute component={LandingPage} />
+      <Route path='startResume' header='Resume Header' component={PromptContainer} />
+      <Route path='resume' header='Resume' component={ResumeContainer} />
+      <Route path='edit/:hashId' header='Edit' component={ResumePage} />
+      <Route path='edit' header='Edit' component={ErrorPage} />
+    </Route>
+  </Router>
 );
 
 export default routes
