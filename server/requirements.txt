@@ -1,0 +1,16 @@
+Flask==0.11.1
+Jinja2==2.8
+MarkupSafe==0.23
+PyLaTeX==1.0.0
+Werkzeug==0.11.11
+argparse==1.2.1
+click==6.6
+functools32==3.2.3-2
+future==0.15.2
+futures==3.0.5
+itsdangerous==0.24
+jsonschema==2.5.1
+ordered-set==2.0.1
+requests==2.11.1
+tinys3==0.1.11
+wsgiref==0.1.2
