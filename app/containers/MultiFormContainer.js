@@ -77,7 +77,7 @@ const MultiFormContainer = React.createClass({
           className='btn btn-primary'
           type="submit"
           onClick={this.handleAddSection}>
-            {`Add ${this.props.sectionName} Section`}
+            <i className='fa fa-plus' /> {` ${this.props.sectionName} Section`}
         </button>
         {
           this.state.listItems.map((item, index) =>

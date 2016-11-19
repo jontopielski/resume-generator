@@ -71,7 +71,7 @@ const SkillsFormContainer = React.createClass({
           className='btn btn-primary'
           type="submit"
           onClick={this.handleAddSection}>
-            {`Add Skills Section`}
+            <i className='fa fa-plus' />{` Skills Section`}
         </button>
         {
           this.state.listItems.map((item, index) =>
