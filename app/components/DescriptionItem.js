@@ -8,8 +8,8 @@ const DescriptionItem = React.createClass({
   render() {
     return (
       <div className="form-group">
-        <div className='col-sm-12'>
-          <label style={mediumSpace}>{this.props.name}</label>
+        <div className=''>
+          <label>{this.props.label}</label>
           <input
             className='form-control'
             onChange={this.onUpdateField}
@@ -28,6 +28,7 @@ DescriptionItem.propTypes = {
   handleUpdateListContainerData: PropTypes.func.isRequired,
   value: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
   index: PropTypes.number.isRequired,
   placeholder: PropTypes.string
 }

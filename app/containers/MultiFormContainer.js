@@ -57,6 +57,9 @@ const MultiFormContainer = React.createClass({
     }, () => this.props.handleUpdateContainerData(this.props.sectionName.toLowerCase(), this.state))
   },
   handleRemoveSection(index) {
+    if (confirm('Are you sure you want to delete section: ' + this.props.sectionName + '?') == false) {
+      return
+    }
     const updatedListItems = this.state.listItems.filter((item, i) =>
       i != index
     )
@@ -74,7 +77,7 @@ const MultiFormContainer = React.createClass({
           className='btn btn-primary'
           type="submit"
           onClick={this.handleAddSection}>
-            Add Section
+            {`Add ${this.props.sectionName} Section`}
         </button>
         {
           this.state.listItems.map((item, index) =>
@@ -82,6 +85,7 @@ const MultiFormContainer = React.createClass({
               <SectionFormContainer
                 index={index}
                 initialData={this.state.listItems[index]}
+                sectionName={this.props.sectionName}
                 handleUpdateMultiContainerData={this.handleUpdateMultiContainerData} />
               <div className='col-sm-12'>
                 <button
@@ -89,7 +93,7 @@ const MultiFormContainer = React.createClass({
                   style={space}
                   type="submit"
                   onClick={() => this.handleRemoveSection(index)}>
-                    Remove Section
+                    <i className="fa fa-trash-o"></i> Remove Section
                 </button>
                 <hr/>
               </div>

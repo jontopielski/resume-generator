@@ -44,17 +44,18 @@ const SectionFormContainer = React.createClass({
   },
   render () {
     return (
-      <div className='container'>
-        <div className='row'>
+      <div>
+        <div>
           <SectionForm
             onUpdateInfo={this.handleUpdateInfo}
             primaryText={this.state.primaryText}
             secondaryText={this.state.secondaryText}
             startDate={this.state.startDate}
             endDate={this.state.endDate}
+            sectionName={this.props.sectionName}
             location={this.state.location} />
         </div>
-        <div className='row'>
+        <div>
           <DescriptionItemsContainer
             handleUpdateListData={this.handleUpdateListData}
             initialListData={this.state.descriptionItems} />
@@ -67,6 +68,7 @@ const SectionFormContainer = React.createClass({
 SectionFormContainer.propTypes = {
   index: PropTypes.number.isRequired,
   handleUpdateMultiContainerData: PropTypes.func.isRequired,
+  sectionName: PropTypes.string.isRequired,
   initialData: PropTypes.object
 }
 

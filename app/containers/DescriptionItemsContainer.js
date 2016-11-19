@@ -48,33 +48,42 @@ const DescriptionItemsContainer = React.createClass({
   },
   render () {
     return (
-      <div className='col-sm-12'>
+      <div>
         <button
           style={space}
           className='btn btn-primary'
           type="submit"
           onClick={this.handleAddItem}>
-            Add Description Item
+            <i className='fa fa-plus' /> Description Item
         </button>
         {
           this.state.descriptionItems.map((item, index) =>
             <div key={index}>
-              <DescriptionItem
-                index={index}
-                value={this.state.descriptionItems[index]}
-                name={'Description Item ' + (index+1)}
-                initialData={this.state.descriptionItems[index]}
-                handleUpdateListContainerData={this.handleUpdateListContainerData} />
-              <div className='col-sm-12'>
-                <button
-                  className='btn btn-danger'
-                  style={space}
-                  type="submit"
-                  onClick={() => this.handleRemoveItem(index)}>
-                    Remove Item
-                </button>
-                <hr/>
-              </div>
+              <ul className='list-group list-inline' style={{marginTop: '1em'}}>
+                <li>
+                  <div>
+                    <button
+                      style={{verticalAlign: 'inherit'}}
+                      className='btn btn-danger'
+                      type="submit"
+                      onClick={() => this.handleRemoveItem(index)}>
+                        <i className="fa fa-minus" />
+                    </button>
+                  </div>
+                </li>
+                <li style={{width: '93%'}}>
+                  <div>
+                    <DescriptionItem
+                      index={index}
+                      value={this.state.descriptionItems[index]}
+                      label={'Description Item ' + (index+1)}
+                      name={'Description Item ' + (index+1)}
+                      placeholder={'Describe what you worked on'}
+                      initialData={this.state.descriptionItems[index]}
+                      handleUpdateListContainerData={this.handleUpdateListContainerData} />
+                  </div>
+                </li>
+              </ul>
             </div>
         )}
       </div>

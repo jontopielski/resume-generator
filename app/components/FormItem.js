@@ -18,7 +18,7 @@ function FormItem ({ onUpdateField, name, value, label, placeholder, type }) {
       </div>
     </div>
   : (
-    <div className="form-group">
+    <div className='form-group'>
       <div className='col-sm-12'>
         <label style={mediumSpace}>{label}</label>
         <input

@@ -18,7 +18,7 @@ function EducationForm ({school, graduationDate, degreeType, gpa, maxGpa, isMajo
             value={graduationDate}
             name={'graduationDate'}
             label={'Graduation Date'}
-            placeholder={'Expected Graduation Date'} />
+            placeholder={'Graduation date'} />
           <FormItem
             onUpdateField={onUpdateInfo}
             value={degreeType}

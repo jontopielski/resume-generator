@@ -18,13 +18,13 @@ function HeaderForm ({name, email, phoneNumber, address, website, onUpdateInfo})
             value={email}
             name={'email'}
             label={'Email*'}
-            placeholder={'johndoe@gmail.com'} />
+            placeholder={'johndoe@example.com'} />
           <FormItem
             onUpdateField={onUpdateInfo}
             value={phoneNumber}
             name={'phoneNumber'}
             label={'Phone Number*'}
-            placeholder={'1234567890'} />
+            placeholder={'1234567890 (only numbers)'} />
           <FormItem
             onUpdateField={onUpdateInfo}
             value={address}

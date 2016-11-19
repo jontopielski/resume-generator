@@ -140,10 +140,10 @@ def generate_latex():
   if 'education' in section_dict:
     with doc.create(RSectionEnv(arguments='Education')) as education_section:
       education_data = section_dict['education']
-      expected_grad_str = ('Expected %s' % education_data['graduationDate']) if education_data['graduationDate'] != '' else ''
+      grad_str = ('%s' % education_data['graduationDate']) if education_data['graduationDate'] != '' else ''
       university_str = NoEscape('{\\bf %s} \\hfill {\\em %s}' % (
         education_data['school'], 
-        expected_grad_str
+        grad_str
       ))
       degree_str = NoEscape('\\\\ %s' % (education_data['degreeType']))
       education_section.append(university_str)

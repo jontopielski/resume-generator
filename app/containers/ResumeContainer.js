@@ -54,16 +54,16 @@ const ResumeContainer = React.createClass({
     return (
       <div style={{height: '90%'}}>
         <div className='list-group'>
-          <ul className='list-inline'>
+          <ul className='list-inline' style={{margin: '1.5em 0 0 1.5em'}}>
             <li>
               <button
-                className='list-group-item list-group-item-action active'
+                className='list-group-item list-group-item-action list-group-item-success'
                 type="submit"
                 onClick={this.handleSubmit}>
-                  Update Resume
+                  <strong>Update Resume</strong>
               </button>
             </li>
-            <li>
+            <li style={{marginLeft: '1.5em'}}>
               <a
                 className='list-group-item list-group-item-action'
                 href={`${resume_bucket_url}/${this.props.resumeHashId}/resume.pdf`}
