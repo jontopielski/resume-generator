@@ -61,7 +61,7 @@ def initialize_user_data():
   hash_code = request.args['hashId']
 
   with open('resume.json', 'wrb') as json_file:
-  json.dump({}, json_file)
+    json.dump({}, json_file)
 
   populate_aws_credentials()
   conn = tinys3.Connection(aws_access_id, aws_secret_id, endpoint='s3-us-west-2.amazonaws.com')
@@ -164,16 +164,24 @@ def generate_latex():
         start_date_str = ('%s' % curr_item['startDate']) if curr_item['startDate'] != '' else ''
         end_date_str = (' - %s' % curr_item['endDate']) if curr_item['endDate'] != '' else ''
         date_worked_str = ('%s%s' % (start_date_str, end_date_str))
-        with doc.create(rSubsectionEnv(arguments=(
-          curr_item['primaryText'],
-          date_worked_str,
-          curr_item['secondaryText'],
-          curr_item['location'])
-        )) as curr_subsection:
-          description_items = section_items[j]['descriptionItems'] if len(section_items[j]['descriptionItems']) > 0 else []
-          for k in range(0, len(description_items)):
-            description_str = NoEscape('\\item %s' % description_items[k])
-            curr_subsection.append(description_str)
+        description_items = section_items[j]['descriptionItems'] if len(section_items[j]['descriptionItems']) > 0 else []
+        if len(description_items) > 0:
+          with doc.create(rSubsectionEnv(arguments=(
+            curr_item['primaryText'],
+            date_worked_str,
+            curr_item['secondaryText'],
+            curr_item['location'])
+          )) as curr_subsection:
+            for k in range(0, len(description_items)):
+              description_str = NoEscape('\\item %s' % description_items[k])
+              curr_subsection.append(description_str)
+        else:
+          doc.create(rSubsectionEnv(arguments=(
+            curr_item['primaryText'],
+            date_worked_str,
+            curr_item['secondaryText'],
+            curr_item['location'])
+          ))
 
   if 'skills' in section_dict:
     with doc.create(RSectionEnv(arguments='Skills')) as skills_section:

@@ -1,6 +1,8 @@
 import React, { PropTypes } from 'react'
 import axios from 'axios'
 import SectionForm from '../components/SectionForm'
+import DescriptionItemsContainer from './DescriptionItemsContainer'
+import { space } from '../styles'
 
 function isEmptyObject(obj) {
   return Object.keys(obj).length === 0 && obj.constructor === Object
@@ -14,11 +16,7 @@ const SectionFormContainer = React.createClass({
       startDate: '',
       endDate: '',
       location: '',
-      descriptionItems: [
-        'item1',
-        'item2',
-        'item3'
-      ]
+      descriptionItems: []
     }
   },
   componentDidMount() {
@@ -31,6 +29,7 @@ const SectionFormContainer = React.createClass({
         startDate: this.props.initialData['startDate'],
         endDate: this.props.initialData['endDate'],
         location: this.props.initialData['location'],
+        descriptionItems: this.props.initialData['descriptionItems']
       }, () => (this.props.handleUpdateMultiContainerData(this.props.index, this.state)))
     }
   },
@@ -40,17 +39,30 @@ const SectionFormContainer = React.createClass({
       this.props.handleUpdateMultiContainerData(this.props.index, this.state))
     )
   },
+  handleUpdateListData(listData) {
+    console.log('SFC updating MFC with new listData:')
+    console.log(listData)
+    this.setState({
+      descriptionItems: listData
+    }, () => (this.props.handleUpdateMultiContainerData(this.props.index, this.state)))
+  },
   render () {
-    // console.log('SectionFormContainer state:')
-    // console.log(this.state)
     return (
-      <SectionForm
-        onUpdateInfo={this.handleUpdateInfo}
-        primaryText={this.state.primaryText}
-        secondaryText={this.state.secondaryText}
-        startDate={this.state.startDate}
-        endDate={this.state.endDate}
-        location={this.state.location} />
+      <div className='container'>
+        <div className='row'>
+          <SectionForm
+            onUpdateInfo={this.handleUpdateInfo}
+            primaryText={this.state.primaryText}
+            secondaryText={this.state.secondaryText}
+            startDate={this.state.startDate}
+            endDate={this.state.endDate}
+            location={this.state.location} />
+        </div>
+        <div className='row'>
+          <DescriptionItemsContainer
+            handleUpdateListData={this.handleUpdateListData} />
+        </div>
+      </div>
     )
   }
 });

@@ -44,11 +44,7 @@ const MultiFormContainer = React.createClass({
       startDate: '',
       endDate: '',
       location: '',
-      descriptionItems: [
-        'item1',
-        'item2',
-        'item3'
-      ]
+      descriptionItems: []
     }
     this.setState({
       listItems: updatedListItems,
@@ -72,8 +68,8 @@ const MultiFormContainer = React.createClass({
     }, () => this.props.handleUpdateContainerData(this.props.sectionName.toLowerCase(), this.state))
   },
   render () {
-    console.log('Current state of ' + this.props.sectionName + ' MultiFormContainer:')
-    console.log(this.state)
+    // console.log('Current state of ' + this.props.sectionName + ' MultiFormContainer:')
+    // console.log(this.state.descriptionItems)
     return (
       <div className='col-sm-12'>
         <button
