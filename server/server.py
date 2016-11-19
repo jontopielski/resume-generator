@@ -7,6 +7,7 @@ import random, string, json
 import tinys3
 import sys, fileinput
 import requests
+import time
 
 app = Flask(__name__)
 
@@ -81,7 +82,6 @@ def initialize_user_data():
 
 @app.route('/generate', methods=['POST'])
 def generate_latex():
-
   if 'hashId' not in request.args:
       return error_message('hashId missing from request arguments.')
 

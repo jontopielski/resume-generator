@@ -4,49 +4,7 @@ import HeaderFormContainer from './HeaderFormContainer'
 import EducationFormContainer from './EducationFormContainer'
 import MultiFormContainer from './MultiFormContainer'
 import SectionHeader from '../components/SectionHeader'
-import { server_url, current_version } from '../config/Globals'
 import { space } from '../styles'
-
-function formatJsonData(data) {
-  const json_data = {}
-
-  json_data['version'] = current_version
-  json_data['sections'] = []
-
-  let index = 0
-
-  if (data['header']) {
-    json_data['sections'][index] = data['header']
-    json_data['sections'][index]['sectionName'] = 'header'
-    index++
-  }
-
-  if (data['education']) {
-    json_data['sections'][index] = data['education']
-    json_data['sections'][index]['sectionName'] = 'education'
-    index++
-  }
-
-  if (data['experience']) {
-    json_data['sections'][index] = data['experience']
-    json_data['sections'][index]['sectionName'] = 'experience'
-    index++
-  }
-
-  if (data['projects']) {
-    json_data['sections'][index] = data['projects']
-    json_data['sections'][index]['sectionName'] = 'projects'
-    index++
-  }
-
-  if (data['coursework']) {
-    json_data['sections'][index] = data['coursework']
-    json_data['sections'][index]['sectionName'] = 'coursework'
-    index++
-  }
-
-  return json_data
-}
 
 const EditResumeContainer = React.createClass({
   getInitialState() {
@@ -83,19 +41,6 @@ const EditResumeContainer = React.createClass({
       console.log('No valid section found for data update.')
     }
   },
-  handleSubmit(e) {
-    e.preventDefault()
-    this.props.setUpdateResumeFlag(true)
-    axios({
-      method: 'post',
-      url: `${server_url}/generate?hashId=${this.props.resumeHashId}`,
-      data: formatJsonData(this.props.resumeData)
-    })
-    .then((response) => {
-      this.props.setUpdateResumeFlag(false)
-    })
-    .catch((err) => console.log(err))
-  },
   render() {
     return (
       <div className='col-sm-12'>
@@ -127,15 +72,6 @@ const EditResumeContainer = React.createClass({
             handleUpdateContainerData={this.handleUpdateContainerData}
             resumeHashId={this.props.resumeHashId} />
         </SectionHeader>
-        <div className='col-sm-12'>
-          <button
-            className='btn btn-block btn-success'
-            style={space}
-            type="submit"
-            onClick={this.handleSubmit}>
-              Update Resume
-          </button>
-        </div>
       </div>
     );
   }
@@ -144,8 +80,7 @@ const EditResumeContainer = React.createClass({
 EditResumeContainer.propTypes = {
   resumeData: PropTypes.object.isRequired,
   resumeHashId: PropTypes.string.isRequired,
-  updateMainResumeData: PropTypes.func.isRequired,
-  setUpdateResumeFlag: PropTypes.func.isRequired
+  updateMainResumeData: PropTypes.func.isRequired
 }
 
 export default EditResumeContainer

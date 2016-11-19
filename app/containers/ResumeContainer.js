@@ -1,7 +1,8 @@
 import React, { PropTypes } from 'react'
 import Resume from '../components/Resume'
 import axios from 'axios'
-import { uploaded_resume_url } from '../config/Globals'
+import { uploaded_resume_url, server_url, current_version, resume_bucket_url } from '../config/Globals'
+import { space, maxHeight } from '../styles'
 
 const ResumeContainer = React.createClass({
   getInitialState() {
@@ -31,18 +32,102 @@ const ResumeContainer = React.createClass({
       })
     }
   },
+  // ${resume_bucket_url}/${this.resumeHashId}/resume.pdf
+  handleSubmit(e) {
+    e.preventDefault()
+    this.setState({ // Prompt re-rendering of resume
+      isLoading: true
+    })
+    axios({
+      method: 'post',
+      url: `${server_url}/generate?hashId=${this.props.resumeHashId}`,
+      data: formatJsonData(this.props.resumeData)
+    })
+    .then((response) => {
+      this.setState({ // Prompt re-rendering of resume
+        isLoading: false
+      })
+    })
+    .catch((err) => console.log(err))
+  },
   render() {
     return (
-      <Resume
-        isLoading={this.state.isLoading}
-        resumeHashId={this.props.resumeHashId} />
+      <div style={{height: '90%'}}>
+        <div className='list-group'>
+          <ul className='list-inline'>
+            <li>
+              <button
+                className='list-group-item list-group-item-action active'
+                type="submit"
+                onClick={this.handleSubmit}>
+                  Update Resume
+              </button>
+            </li>
+            <li>
+              <a
+                className='list-group-item list-group-item-action'
+                href={`${resume_bucket_url}/${this.props.resumeHashId}/resume.pdf`}
+                download='resume.pdf'>
+                  Download .pdf
+              </a>
+            </li>
+          </ul>            
+        </div>
+        <div style={maxHeight}>
+          <Resume
+            isLoading={this.state.isLoading}
+            resumeHashId={this.props.resumeHashId} />
+        </div>
+      </div>
     )
   }
 })
 
 ResumeContainer.propTypes = {
   shouldUpdateResume: PropTypes.bool.isRequired,
-  resumeHashId: PropTypes.string.isRequired
+  resumeHashId: PropTypes.string.isRequired,
+  resumeData: PropTypes.object.isRequired
+}
+
+function formatJsonData(data) {
+  const json_data = {}
+
+  json_data['version'] = current_version
+  json_data['sections'] = []
+
+  let index = 0
+
+  if (data['header']) {
+    json_data['sections'][index] = data['header']
+    json_data['sections'][index]['sectionName'] = 'header'
+    index++
+  }
+
+  if (data['education']) {
+    json_data['sections'][index] = data['education']
+    json_data['sections'][index]['sectionName'] = 'education'
+    index++
+  }
+
+  if (data['experience']) {
+    json_data['sections'][index] = data['experience']
+    json_data['sections'][index]['sectionName'] = 'experience'
+    index++
+  }
+
+  if (data['projects']) {
+    json_data['sections'][index] = data['projects']
+    json_data['sections'][index]['sectionName'] = 'projects'
+    index++
+  }
+
+  if (data['coursework']) {
+    json_data['sections'][index] = data['coursework']
+    json_data['sections'][index]['sectionName'] = 'coursework'
+    index++
+  }
+
+  return json_data
 }
 
 export default ResumeContainer

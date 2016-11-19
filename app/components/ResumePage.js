@@ -40,20 +40,19 @@ const ResumePage = React.createClass({
     .catch((err) => console.log(err))
   },
   render() {
-    console.log(this.state.resumeData)
     return (
       <div className="fa col-xs-12" style={resumePageStyle}>
         <div style={floatLeft}>
           <EditResumeContainer
             resumeData={this.state.resumeData}
             updateMainResumeData={this.handleUpdateResumeData}
-            setUpdateResumeFlag={this.setUpdateResume}
             resumeHashId={this.state.hashId} />
         </div>
         <div style={floatRight}>
           <ResumeContainer
             shouldUpdateResume={this.state.updateResume}
-            resumeHashId={this.state.hashId} />
+            resumeHashId={this.state.hashId}
+            resumeData={this.state.resumeData} />
         </div>
       </div>
     )

@@ -20,10 +20,7 @@ const SectionFormContainer = React.createClass({
     }
   },
   componentDidMount() {
-    console.log('InitialData:')
-    console.log(!!this.props.initialData)
     if (!!this.props.initialData && !isEmptyObject(this.props.initialData)) {
-      console.log('Entering InitialData')
       this.setState({
         primaryText: this.props.initialData['primaryText'],
         secondaryText: this.props.initialData['secondaryText'],
@@ -41,8 +38,6 @@ const SectionFormContainer = React.createClass({
     )
   },
   handleUpdateListData(listData) {
-    console.log('SFC updating MFC with new listData:')
-    console.log(listData)
     this.setState({
       descriptionItems: listData
     }, () => (this.props.handleUpdateMultiContainerData(this.props.index, this.state)))
