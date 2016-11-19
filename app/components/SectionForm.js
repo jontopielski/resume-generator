@@ -7,28 +7,33 @@ function SectionForm ({index, primaryText, secondaryText, startDate, endDate, lo
     <div style={transparentBg}>
         <FormItem
             onUpdateField={onUpdateInfo}
-            value={primaryText}
             name={'primaryText'}
-            placeholder={'Primary Text'} />
+            value={primaryText}
+            label={'Primary Text'}
+            placeholder={'The title text for this section'} />
           <FormItem
             onUpdateField={onUpdateInfo}
-            value={secondaryText}
             name={'secondaryText'}
-            placeholder={'Secondary Text'} />
+            value={secondaryText}
+            label={'Secondary Text'}
+            placeholder={'The text that goes below the primary text'} />
           <FormItem
             onUpdateField={onUpdateInfo}
-            value={startDate}
             name={'startDate'}
+            value={startDate}
+            label={'Start Date'}
             placeholder={'Start Date'} />
           <FormItem
             onUpdateField={onUpdateInfo}
-            value={endDate}
             name={'endDate'}
+            value={endDate}
+            label={'End Date'}
             placeholder={'End Date'} />
           <FormItem
             onUpdateField={onUpdateInfo}
-            value={location}
             name={'location'}
+            value={location}
+            label={'Location'}
             placeholder={'Location'} />
       <hr/>
     </div>

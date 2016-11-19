@@ -11,27 +11,32 @@ function HeaderForm ({name, email, phoneNumber, address, website, onUpdateInfo})
             onUpdateField={onUpdateInfo}
             value={name}
             name={'name'}
-            placeholder={'Name*'} />
+            label={'Name*'}
+            placeholder={'John Doe'} />
           <FormItem
             onUpdateField={onUpdateInfo}
             value={email}
             name={'email'}
-            placeholder={'Email*'} />
+            label={'Email*'}
+            placeholder={'johndoe@gmail.com'} />
           <FormItem
             onUpdateField={onUpdateInfo}
             value={phoneNumber}
             name={'phoneNumber'}
-            placeholder={'Phone Number*'} />
+            label={'Phone Number*'}
+            placeholder={'1234567890'} />
           <FormItem
             onUpdateField={onUpdateInfo}
             value={address}
             name={'address'}
-            placeholder={'Address'} />
+            label={'Address'}
+            placeholder={'123 Park Street, San Francisco, CA'} />
           <FormItem
             onUpdateField={onUpdateInfo}
             value={website}
             name={'website'}
-            placeholder={'Website'} />
+            label={'Website'}
+            placeholder={'github.com/johndoe'} />
         </form>
       </div>
     </div>

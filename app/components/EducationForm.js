@@ -11,31 +11,37 @@ function EducationForm ({school, graduationDate, degreeType, gpa, maxGpa, isMajo
             onUpdateField={onUpdateInfo}
             value={school}
             name={'school'}
-            placeholder={'School'} />
+            label={'School'}
+            placeholder={'University'} />
           <FormItem
             onUpdateField={onUpdateInfo}
             value={graduationDate}
             name={'graduationDate'}
-            placeholder={'Graduation Date'} />
+            label={'Graduation Date'}
+            placeholder={'Expected Graduation Date'} />
           <FormItem
             onUpdateField={onUpdateInfo}
             value={degreeType}
             name={'degreeType'}
-            placeholder={'Degree Type (ex: "B.S. in Economics")'} />
+            label={'Degree Title'}
+            placeholder={'(ex: "B.S. in Physics")'} />
           <FormItem
             onUpdateField={onUpdateInfo}
             value={gpa}
             name={'gpa'}
-            placeholder={'Gpa'} />
+            label={'GPA'}
+            placeholder={'Grade point average'} />
           <FormItem
             onUpdateField={onUpdateInfo}
             value={maxGpa}
             name={'maxGpa'}
-            placeholder={'Max Gpa (What is your GPA out of?)'} />
+            label={'Max GPA'}
+            placeholder={'What is your GPA out of?'} />
           <FormItem
             onUpdateField={onUpdateCheckbox}
             value={isMajorGpa}
             name={'isMajorGpa'}
+            label={'Major GPA'}
             type={'checkbox'}
             placeholder={'Major Gpa?'} />
         </form>

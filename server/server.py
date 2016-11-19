@@ -6,11 +6,13 @@ from jsonschema import validate, ValidationError, SchemaError
 import random, string, json
 import tinys3
 import sys, fileinput
+import requests
 
 app = Flask(__name__)
 
 aws_access_id = ''
 aws_secret_id = ''
+s3_bucket_url = 'https://s3-us-west-2.amazonaws.com/resume-gen/resumes'
 
 class RSectionEnv(Environment):
   _latex_name = 'rSection'
@@ -50,7 +52,6 @@ def create_hash():
   hash_code = ''.join(random.SystemRandom().choice(string.ascii_letters + string.digits) for _ in range(16))
   print 'Created new hash code: %s' % hash_code
 
-
   return jsonify(hash_code)
 
 @app.route('/initialize', methods=['POST'])
@@ -62,6 +63,11 @@ def initialize_user_data():
 
   with open('resume.json', 'wrb') as json_file:
     json.dump({}, json_file)
+
+  r = requests.get(s3_bucket_url + '/%s/resume.pdf' % hash_code)
+
+  if r.status_code == 200:
+    return error_message('User data already exists for the given hash code. No need to initialize.')
 
   populate_aws_credentials()
   conn = tinys3.Connection(aws_access_id, aws_secret_id, endpoint='s3-us-west-2.amazonaws.com')
@@ -155,6 +161,7 @@ def generate_latex():
   for i in range(0, len(resume_sections)):
     section_data = resume_sections[i]
     section_name = section_data['sectionName']
+    print section_name
     if is_special_section(section_name) or len(section_data['listItems']) == 0 or section_data['sectionCount'] == 0:
       continue
     with doc.create(RSectionEnv(arguments=section_name.title())) as curr_section:
@@ -165,23 +172,17 @@ def generate_latex():
         end_date_str = (' - %s' % curr_item['endDate']) if curr_item['endDate'] != '' else ''
         date_worked_str = ('%s%s' % (start_date_str, end_date_str))
         description_items = section_items[j]['descriptionItems'] if len(section_items[j]['descriptionItems']) > 0 else []
-        if len(description_items) > 0:
-          with doc.create(rSubsectionEnv(arguments=(
-            curr_item['primaryText'],
-            date_worked_str,
-            curr_item['secondaryText'],
-            curr_item['location'])
-          )) as curr_subsection:
-            for k in range(0, len(description_items)):
-              description_str = NoEscape('\\item %s' % description_items[k])
-              curr_subsection.append(description_str)
-        else:
-          doc.create(rSubsectionEnv(arguments=(
-            curr_item['primaryText'],
-            date_worked_str,
-            curr_item['secondaryText'],
-            curr_item['location'])
-          ))
+        with doc.create(rSubsectionEnv(arguments=(
+          curr_item['primaryText'],
+          date_worked_str,
+          curr_item['secondaryText'],
+          curr_item['location'])
+        )) as curr_subsection:
+          if len(description_items) == 0:
+            curr_subsection.append(NoEscape('\\item'))
+          for k in range(0, len(description_items)):
+            description_str = NoEscape('\\item %s' % description_items[k])
+            curr_subsection.append(description_str)
 
   if 'skills' in section_dict:
     with doc.create(RSectionEnv(arguments='Skills')) as skills_section:

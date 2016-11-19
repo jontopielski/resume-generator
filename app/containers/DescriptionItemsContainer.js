@@ -17,7 +17,7 @@ const DescriptionItemsContainer = React.createClass({
     const updatedListItems = this.state.descriptionItems
     updatedListItems[this.state.itemCount] = ''
     this.setState({
-      listItems: updatedListItems,
+      descriptionItems: updatedListItems,
       itemCount: this.state.itemCount + 1
     }, () => this.props.handleUpdateListData(this.state.descriptionItems))
   },
@@ -37,9 +37,16 @@ const DescriptionItemsContainer = React.createClass({
       descriptionItems: updatedList
     }, () => (this.props.handleUpdateListData(this.state.descriptionItems)))
   },
+  componentWillReceiveProps(nextProps) {
+    if (!!nextProps.initialListData && nextProps.initialListData.length != 0
+      && (this.state.descriptionItems != nextProps.initialListData)) {
+        this.setState({
+          descriptionItems: nextProps.initialListData,
+          itemCount: nextProps.initialListData.length
+        })
+    }
+  },
   render () {
-    // console.log('Current state of ' + this.props.sectionName + ' DescriptionItemsContainer:')
-    // console.log(this.state.descriptionItems)
     return (
       <div className='col-sm-12'>
         <button
@@ -56,7 +63,7 @@ const DescriptionItemsContainer = React.createClass({
                 index={index}
                 value={this.state.descriptionItems[index]}
                 name={'Description Item ' + (index+1)}
-                initialData={this.state.listItems[index]}
+                initialData={this.state.descriptionItems[index]}
                 handleUpdateListContainerData={this.handleUpdateListContainerData} />
               <div className='col-sm-12'>
                 <button
@@ -76,7 +83,8 @@ const DescriptionItemsContainer = React.createClass({
 });
 
 DescriptionItemsContainer.propTypes = {
-  handleUpdateListData: PropTypes.func.isRequired
+  handleUpdateListData: PropTypes.func.isRequired,
+  initialListData: PropTypes.array
 }
 
 export default DescriptionItemsContainer

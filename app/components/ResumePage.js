@@ -27,9 +27,22 @@ const ResumePage = React.createClass({
       updateResume: shouldUpdate
     })
   },
+  componentDidMount() {
+    axios({
+      method: 'post',
+      url: `${server_url}/initialize?hashId=${this.state.hashId}`
+    })
+    .then((response) => {
+      this.setState({
+        updateResume: true
+      }, () => this.setUpdateResume(false))
+    })
+    .catch((err) => console.log(err))
+  },
   render() {
+    console.log(this.state.resumeData)
     return (
-      <div className="jumbotron col-sm-12" style={resumePageStyle}>
+      <div className="fa col-xs-12" style={resumePageStyle}>
         <div style={floatLeft}>
           <EditResumeContainer
             resumeData={this.state.resumeData}

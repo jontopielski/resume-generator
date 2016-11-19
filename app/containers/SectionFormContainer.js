@@ -20,9 +20,10 @@ const SectionFormContainer = React.createClass({
     }
   },
   componentDidMount() {
-    if (!this.props.initialData && !isEmptyObject(this.props.initialData)) {
-      console.log('InitialData:')
-      console.log(this.props.initialData)
+    console.log('InitialData:')
+    console.log(!!this.props.initialData)
+    if (!!this.props.initialData && !isEmptyObject(this.props.initialData)) {
+      console.log('Entering InitialData')
       this.setState({
         primaryText: this.props.initialData['primaryText'],
         secondaryText: this.props.initialData['secondaryText'],
@@ -60,7 +61,8 @@ const SectionFormContainer = React.createClass({
         </div>
         <div className='row'>
           <DescriptionItemsContainer
-            handleUpdateListData={this.handleUpdateListData} />
+            handleUpdateListData={this.handleUpdateListData}
+            initialListData={this.state.descriptionItems} />
         </div>
       </div>
     )

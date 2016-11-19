@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react'
 import { mediumSpace } from '../styles'
 
-function FormItem ({ onUpdateField, name, value, placeholder, type }) {
+function FormItem ({ onUpdateField, name, value, label, placeholder, type }) {
   return type === 'checkbox' ? 
     <div className='form-group'>
       <div className='col-sm-12'>
@@ -12,7 +12,7 @@ function FormItem ({ onUpdateField, name, value, placeholder, type }) {
             name={name}
             type={type ? type : 'text'}
             value={value} />
-          {' ' + placeholder}
+          {' ' + label}
         </label>
         
       </div>
@@ -20,7 +20,7 @@ function FormItem ({ onUpdateField, name, value, placeholder, type }) {
   : (
     <div className="form-group">
       <div className='col-sm-12'>
-        <label style={mediumSpace}>{placeholder}</label>
+        <label style={mediumSpace}>{label}</label>
         <input
           className='form-control'
           onChange={onUpdateField}
@@ -38,8 +38,9 @@ FormItem.propTypes = {
   onUpdateField: PropTypes.func.isRequired,
   value: PropTypes.any.isRequired,
   name: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
   placeholder: PropTypes.string,
-  type: PropTypes.string
+  type: PropTypes.string,
 }
 
 export default FormItem
