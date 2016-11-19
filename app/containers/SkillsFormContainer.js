@@ -1,11 +1,10 @@
 import React, { PropTypes } from 'react'
 import axios from 'axios'
-import SectionForm from '../components/SectionForm'
-import SectionFormContainer from './SectionFormContainer'
+import SkillsListContainer from './SkillsListContainer'
 import { resume_bucket_url } from '../config/Globals'
 import { space } from '../styles'
 
-const MultiFormContainer = React.createClass({
+const SkillsFormContainer = React.createClass({
   getInitialState () {
     return {
       sectionCount: 0,
@@ -18,14 +17,15 @@ const MultiFormContainer = React.createClass({
         if (response.status === 200) {
           if (response.data['sections']) {
             const filtered_data = response.data['sections'].filter((entry) =>
-              entry['sectionName'] == this.props.sectionName.toLowerCase()
+              entry['sectionName'] == 'skills'
             )
             if (filtered_data.length == 1) {
               const data = filtered_data[0]
+              console.log(data)
               this.setState({
                 listItems: data['listItems'],
                 sectionCount: data['listItems'].length
-              }, () => this.props.handleUpdateContainerData(this.props.sectionName.toLowerCase(), this.state))
+              }, () => this.props.handleUpdateContainerData('skills', this.state))
             }
           }
         }
@@ -37,27 +37,23 @@ const MultiFormContainer = React.createClass({
   handleAddSection(e) {
     const updatedListItems = this.state.listItems
     updatedListItems[this.state.sectionCount] = {
-      primaryText: '',
-      secondaryText: '',
-      startDate: '',
-      endDate: '',
-      location: '',
-      descriptionItems: ['']
+      listName: '',
+      items: ''
     }
     this.setState({
       listItems: updatedListItems,
       sectionCount: this.state.sectionCount + 1
-    }, () => this.props.handleUpdateContainerData(this.props.sectionName.toLowerCase(), this.state))
+    }, () => this.props.handleUpdateContainerData('skills', this.state))
   },
-  handleUpdateMultiContainerData(index, data) {
+  handleUpdateParentData(index, field, value) {
     const updatedListItems = this.state.listItems
-    updatedListItems[index] = data
+    updatedListItems[index][field] = value
     this.setState({
       listItems: updatedListItems
-    }, () => this.props.handleUpdateContainerData(this.props.sectionName.toLowerCase(), this.state))
+    }, () => this.props.handleUpdateContainerData('skills', this.state))
   },
   handleRemoveSection(index) {
-    if (confirm('Are you sure you want to delete section: ' + this.props.sectionName + '?') == false) {
+    if (confirm('Are you sure you want to delete section: skills?') == false) {
       return
     }
     const updatedListItems = this.state.listItems.filter((item, i) =>
@@ -66,27 +62,25 @@ const MultiFormContainer = React.createClass({
     this.setState({
       listItems: updatedListItems,
       sectionCount: this.state.sectionCount - 1
-    }, () => this.props.handleUpdateContainerData(this.props.sectionName.toLowerCase(), this.state))
+    }, () => this.props.handleUpdateContainerData('skills', this.state))
   },
   render () {
-    // console.log('Current state of ' + this.props.sectionName + ' MultiFormContainer:')
-    // console.log(this.state.descriptionItems)
     return (
       <div className='col-sm-12'>
         <button
           className='btn btn-primary'
           type="submit"
           onClick={this.handleAddSection}>
-            {`Add ${this.props.sectionName} Section`}
+            {`Add Skills Section`}
         </button>
         {
           this.state.listItems.map((item, index) =>
             <div key={index}>
-              <SectionFormContainer
+              <SkillsListContainer
                 index={index}
-                initialData={this.state.listItems[index]}
-                sectionName={this.props.sectionName}
-                handleUpdateMultiContainerData={this.handleUpdateMultiContainerData} />
+                listName={this.state.listItems[index]['listName']}
+                items={this.state.listItems[index]['items']}
+                handleUpdateParentData={this.handleUpdateParentData} />
               <div className='col-sm-12'>
                 <button
                   className='btn btn-danger'
@@ -104,10 +98,9 @@ const MultiFormContainer = React.createClass({
   }
 });
 
-MultiFormContainer.propTypes = {
-  sectionName: PropTypes.string.isRequired,
+SkillsFormContainer.propTypes = {
   resumeHashId: PropTypes.string.isRequired,
   handleUpdateContainerData: PropTypes.func.isRequired
 }
 
-export default MultiFormContainer
+export default SkillsFormContainer

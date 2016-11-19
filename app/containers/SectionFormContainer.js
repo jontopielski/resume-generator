@@ -16,7 +16,7 @@ const SectionFormContainer = React.createClass({
       startDate: '',
       endDate: '',
       location: '',
-      descriptionItems: []
+      descriptionItems: ['']
     }
   },
   componentDidMount() {

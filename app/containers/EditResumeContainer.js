@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react'
 import axios from 'axios'
 import HeaderFormContainer from './HeaderFormContainer'
 import EducationFormContainer from './EducationFormContainer'
+import SkillsFormContainer from './SkillsFormContainer'
 import MultiFormContainer from './MultiFormContainer'
 import SectionHeader from '../components/SectionHeader'
 import { space } from '../styles'
@@ -13,7 +14,8 @@ const EditResumeContainer = React.createClass({
       educationData: {},
       experienceData: {},
       projectsData: {},
-      courseworkData: {}
+      courseworkData: {},
+      skillsData: {}
     }
   },
   handleUpdateContainerData(section, data) {
@@ -37,6 +39,10 @@ const EditResumeContainer = React.createClass({
       this.setState({
         courseworkData: data
       }, () => this.props.updateMainResumeData(section, this.state.courseworkData))
+    } else if (section === 'skills') {
+      this.setState({
+        skillsData: data
+      }, () => this.props.updateMainResumeData(section, this.state.skillsData))
     } else {
       console.log('No valid section found for data update.')
     }
@@ -69,6 +75,11 @@ const EditResumeContainer = React.createClass({
         <SectionHeader sectionName={'Coursework'}>
           <MultiFormContainer
             sectionName={'Coursework'}
+            handleUpdateContainerData={this.handleUpdateContainerData}
+            resumeHashId={this.props.resumeHashId} />
+        </SectionHeader>
+        <SectionHeader sectionName={'Skills'}>
+          <SkillsFormContainer
             handleUpdateContainerData={this.handleUpdateContainerData}
             resumeHashId={this.props.resumeHashId} />
         </SectionHeader>

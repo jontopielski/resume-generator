@@ -187,11 +187,11 @@ def generate_latex():
   if 'skills' in section_dict:
     with doc.create(RSectionEnv(arguments='Skills')) as skills_section:
       with doc.create(Tabular(NoEscape('@{} >{\\bfseries}l @{\\hspace{6ex}} l'))) as skills_table:
-        skills_list = section_dict['skills']['skillsList']
+        skills_list = section_dict['skills']['listItems']
         for i in range(0, len(skills_list)):
           skill_name = skills_list[i]['listName']
-          list_items = skills_list[i]['listItems']
-          skills_str = NoEscape('%s & %s \\\\' % (skill_name, ', '.join(list_items)))
+          list_items = skills_list[i]['items']
+          skills_str = NoEscape('%s & %s \\\\' % (skill_name, list_items))
           skills_table.append(skills_str)
   
 

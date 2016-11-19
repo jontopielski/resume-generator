@@ -127,6 +127,13 @@ function formatJsonData(data) {
     index++
   }
 
+  if (data['skills']) {
+    json_data['sections'][index] = data['skills']
+    json_data['sections'][index]['sectionName'] = 'skills'
+    index++
+  }
+
+
   return json_data
 }
 

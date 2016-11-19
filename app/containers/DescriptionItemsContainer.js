@@ -9,8 +9,8 @@ import { space, mediumSpace } from '../styles'
 const DescriptionItemsContainer = React.createClass({
   getInitialState () {
     return {
-      itemCount: 0,
-      descriptionItems: []
+      itemCount: 1,
+      descriptionItems: ['']
     }
   },
   handleAddItem(e) {
