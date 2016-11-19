@@ -47,7 +47,7 @@ def fill_document(doc):
       with doc.create(Subsection('A subsection')):
           doc.append('Also some crazy characters: $&#{}')
 
-@app.route('/hash', methods=['GET'])
+@app.route('/api/hash', methods=['GET'])
 def create_hash():
   print 'Creating new hash code..'
   hash_code = ''.join(random.SystemRandom().choice(string.ascii_letters + string.digits) for _ in range(16))
@@ -55,7 +55,7 @@ def create_hash():
 
   return jsonify(hash_code)
 
-@app.route('/initialize', methods=['POST'])
+@app.route('/api/initialize', methods=['POST'])
 def initialize_user_data():
   if 'hashId' not in request.args:
       return error_message('hashId missing from request arguments.')
@@ -80,7 +80,7 @@ def initialize_user_data():
 
   return jsonify('Ok')
 
-@app.route('/generate', methods=['POST'])
+@app.route('/api/generate', methods=['POST'])
 def generate_latex():
   if 'hashId' not in request.args:
       return error_message('hashId missing from request arguments.')
