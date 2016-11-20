@@ -142,7 +142,7 @@ def generate_latex():
       education_data = section_dict['education']
       grad_str = ('%s' % education_data['graduationDate']) if education_data['graduationDate'] != '' else ''
       university_str = NoEscape('{\\bf %s} \\hfill {\\em %s}' % (
-        education_data['school'], 
+        education_data['school'],
         grad_str
       ))
       degree_str = NoEscape('\\\\ %s' % (education_data['degreeType']))
@@ -193,7 +193,7 @@ def generate_latex():
           list_items = skills_list[i]['items']
           skills_str = NoEscape('%s & %s \\\\' % (skill_name, list_items))
           skills_table.append(skills_str)
-  
+
 
   print 'Generating pdf..'
   doc.generate_pdf()
@@ -252,7 +252,7 @@ def is_special_section(section_name):
 
 def error_message(message):
   return jsonify({
-    'error_message': message  
+    'error_message': message
     }
   )
 
