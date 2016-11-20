@@ -7,7 +7,7 @@ import random, string, json
 import tinys3
 import sys, fileinput
 import requests
-import time
+import os, time
 
 app = Flask(__name__)
 
