@@ -1,5 +1,4 @@
 import React, { PropTypes } from 'react'
-import Loading from './Loading'
 import { uploaded_resume_url, resume_bucket_url } from '../config/Globals'
 import { transparentBg, resumeStyle } from '../styles'
 

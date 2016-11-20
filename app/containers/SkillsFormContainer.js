@@ -21,7 +21,6 @@ const SkillsFormContainer = React.createClass({
             )
             if (filtered_data.length == 1) {
               const data = filtered_data[0]
-              console.log(data)
               this.setState({
                 listItems: data['listItems'],
                 sectionCount: data['listItems'].length

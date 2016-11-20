@@ -34,7 +34,6 @@ const ResumeContainer = React.createClass({
   },
   // ${resume_bucket_url}/${this.resumeHashId}/resume.pdf
   handleSubmit(e) {
-		console.log('Sending request to ' + `${server_url}/generate?hashId=${this.props.resumeHashId}`)
     e.preventDefault()
     this.setState({ // Prompt re-rendering of resume
       isLoading: true

@@ -1,7 +1,7 @@
 import React from 'react'
 import axios from 'axios'
 import { Link } from 'react-router'
-import { server_url, sample_resume_url } from '../config/Globals'
+import { server_url } from '../config/Globals'
 import { landingPageStyles } from '../styles/landing_page'
 
 const LandingPage = React.createClass({
@@ -11,10 +11,9 @@ const LandingPage = React.createClass({
     }
   },
   componentDidMount() {
-    console.log('Calling BE to create new hash code..')
     axios.get(`${server_url}/hash`)
       .then((response) => {
-        console.log('Setting hash to: ' + response.data)
+        console.log(response.data)
         if (response.status === 200) {
           this.setState({
             hashId: response.data
