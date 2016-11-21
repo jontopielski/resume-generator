@@ -65,7 +65,7 @@ const SkillsFormContainer = React.createClass({
   },
   render () {
     return (
-      <div className='col-sm-12'>
+      <div>
         <button
           className='btn btn-primary'
           type="submit"

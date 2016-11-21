@@ -72,7 +72,7 @@ const MultiFormContainer = React.createClass({
     // console.log('Current state of ' + this.props.sectionName + ' MultiFormContainer:')
     // console.log(this.state.descriptionItems)
     return (
-      <div className='col-sm-12'>
+      <div>
         <button
           className='btn btn-primary'
           type="submit"

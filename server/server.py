@@ -88,7 +88,6 @@ def generate_latex():
   hash_code = request.args['hashId']
 
   try:
-    print 'Attempting to load json body..'
     json_body = json_loads_byteified(json.dumps(request.get_json(), ensure_ascii=False))
   except:
     return error_message('Unable to convert json in request body to readable format.')
@@ -161,7 +160,6 @@ def generate_latex():
   for i in range(0, len(resume_sections)):
     section_data = resume_sections[i]
     section_name = section_data['sectionName']
-    print section_name
     if is_special_section(section_name) or len(section_data['listItems']) == 0 or section_data['sectionCount'] == 0:
       continue
     with doc.create(RSectionEnv(arguments=section_name.title())) as curr_section:

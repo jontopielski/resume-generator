@@ -11,7 +11,7 @@ export const landingPageStyles = {
   },
   headerStyling: {
     textAlign: 'center',
-    backgroundImage: 'url("https://source.unsplash.com/zEJIuKZcD8c")',
+    backgroundImage: 'url("https://s3-us-west-2.amazonaws.com/resume-gen/images/resume_stock_photo.jpg")',
     backgroundSize: 'cover',
     padding: '150px',
     color: 'white',

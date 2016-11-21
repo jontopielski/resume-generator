@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react'
-import Resume from '../components/Resume'
 import axios from 'axios'
+import Resume from '../components/Resume'
 import { uploaded_resume_url, server_url, current_version, resume_bucket_url } from '../config/Globals'
 import { space, maxHeight } from '../styles'
 
@@ -53,25 +53,39 @@ const ResumeContainer = React.createClass({
   render() {
     return (
       <div style={{height: '90%'}}>
-        <div className='list-group'>
-          <ul className='list-inline' style={{margin: '1.5em 0 0 1.5em'}}>
-            <li>
-              <button
-                className='list-group-item list-group-item-action list-group-item-success'
-                type="submit"
-                onClick={this.handleSubmit}>
-                  <strong>Update Resume</strong>
-              </button>
-            </li>
-            <li style={{marginLeft: '1.5em'}}>
-              <a
-                className='list-group-item list-group-item-action'
-                href={`${resume_bucket_url}/${this.props.resumeHashId}/resume.pdf`}
-                download='resume.pdf'>
-                  Download .pdf
-              </a>
-            </li>
-          </ul>            
+        <div style={{margin: '1em 1em 1em 1em'}}>
+          <div style={{display: 'inline'}}>
+            <button
+              className='btn btn-success'
+              type="submit"
+              onClick={this.handleSubmit}>
+                Update Resume
+            </button>
+          </div>
+          <div style={{display: 'inline', float: 'right'}}>
+            <a
+              target='_blank'
+              className='btn btn-default'
+              href={'https://goo.gl/forms/KwlhgrfYLV8FdKm63'}>
+              <i className='fa fa-commenting-o' /> Leave Feedback
+            </a>
+          </div>
+          <div style={{display: 'inline', float: 'right', marginRight: '1.5em'  }}>
+            <a
+              target='_blank'
+              className='btn btn-default'
+              href={'https://goo.gl/forms/nMxwyXShk6d43E7w1'}>
+              <i className='fa fa-bug' /> Report Bug
+            </a>
+          </div>
+          <div style={{display: 'inline', float: 'right', marginRight: '1.5em'}}>
+            <a
+              className='btn btn-primary'
+              href={`${resume_bucket_url}/${this.props.resumeHashId}/resume.pdf`}
+              download='resume.pdf'>
+                <i className='fa fa-download' /> Download .pdf
+            </a>
+          </div>
         </div>
         <div style={maxHeight}>
           <Resume
