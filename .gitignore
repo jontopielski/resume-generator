@@ -3,3 +3,7 @@ node_modules
 .aws_credentials
 dist
 venv
+*.log
+*.pdf
+*.tex
+server/resume.json
