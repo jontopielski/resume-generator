@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server --inline --content-base . --history-api-fallback",
-    "prod": "webpack --inline --content-base . --history-api-fallback --port 80"
+    "prod": "webpack --inline --content-base . --history-api-fallback -p"
   },
   "author": "Jon Topielski <jontopielski@gmail.com> (http://topielski.com)",
   "license": "ISC",
