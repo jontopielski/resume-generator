@@ -1,0 +1,7 @@
+node_modules
+.DS_Store
+.aws_credentials
+dist
+venv
+*.pdf
+*.tex
