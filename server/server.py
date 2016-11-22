@@ -119,17 +119,18 @@ def generate_latex():
     phone_number_second_part = phone_number[3:6] if len(phone_number) >= 6 else phone_number[3:]
     phone_number_third_part = phone_number[6:10] if len(phone_number) >= 10 else phone_number[6:]
     # phone_number_str = ('(%s)~$\cdot$~%s~$\cdot$~%s' % (
-    phone_number_str = ('(%s) %s - %s \\\\' % (
+    phone_number_str = ('(%s) %s - %s' % (
       phone_number_first_part,
       phone_number_second_part,
       phone_number_third_part
     ))
-    address_str = ('%s \\\\' % header_data['address']) if header_data['address'] != '' else ''
-    website_str = ('%s \\\\' % header_data['website']) if header_data['website'] != '' else ''
-    email_str = ('%s' % header_data['email']) if header_data['email'] != '' else ''
+    phone_num_sanitized = sanitizeString(phone_number_str) + ' \\\\'
+    address_str = ('%s \\\\' % sanitizeString(header_data['address'])) if header_data['address'] != '' else ''
+    website_str = ('%s \\\\' % sanitizeString(header_data['website'])) if header_data['website'] != '' else ''
+    email_str = ('%s' % sanitizeString(header_data['email'])) if header_data['email'] != '' else ''
     subheader_str = NoEscape('%s %s %s %s' % (
       address_str,
-      phone_number_str,
+      phone_num_sanitized,
       website_str,
       email_str,
     ))
@@ -141,18 +142,18 @@ def generate_latex():
       education_data = section_dict['education']
       grad_str = ('%s' % education_data['graduationDate']) if education_data['graduationDate'] != '' else ''
       university_str = NoEscape('{\\bf %s} \\hfill {\\em %s}' % (
-        education_data['school'],
-        grad_str
+        sanitizeString(education_data['school']),
+        sanitizeString(grad_str)
       ))
-      degree_str = NoEscape('\\\\ %s' % (education_data['degreeType']))
+      degree_str = NoEscape('\\\\ %s' % (sanitizeString(education_data['degreeType'])))
       education_section.append(university_str)
       education_section.append(degree_str)
       if 'gpa' in education_data and education_data['gpa'] != '':
         is_major_gpa_str = 'Major ' if education_data['isMajorGpa'] else ''
-        max_gpa_str = ('/%s' % education_data['maxGpa']) if education_data['maxGpa'] != '' else ''
+        max_gpa_str = ('/%s' % sanitizeString(education_data['maxGpa'])) if education_data['maxGpa'] != '' else ''
         gpa_str = NoEscape('\\\\ %sGPA: {\\bf %s%s}' % (
           is_major_gpa_str,
-          education_data['gpa'],
+          sanitizeString(education_data['gpa']),
           max_gpa_str
         ))
         education_section.append(gpa_str)
@@ -179,7 +180,7 @@ def generate_latex():
           if len(description_items) == 0:
             curr_subsection.append(NoEscape('\\item'))
           for k in range(0, len(description_items)):
-            description_str = NoEscape('\\item %s' % description_items[k])
+            description_str = NoEscape('\\item %s' % sanitizeString(description_items[k]))
             curr_subsection.append(description_str)
 
   if 'skills' in section_dict:
@@ -187,8 +188,8 @@ def generate_latex():
       with doc.create(Tabular(NoEscape('@{} >{\\bfseries}l @{\\hspace{6ex}} l'))) as skills_table:
         skills_list = section_dict['skills']['listItems']
         for i in range(0, len(skills_list)):
-          skill_name = skills_list[i]['listName']
-          list_items = skills_list[i]['items']
+          skill_name = sanitizeString(skills_list[i]['listName'])
+          list_items = sanitizeString(skills_list[i]['items'])
           skills_str = NoEscape('%s & %s \\\\' % (skill_name, list_items))
           skills_table.append(skills_str)
 
@@ -236,6 +237,19 @@ def is_json_valid(json_data):
     print 'Error: Something unexpected happened.'
     raise
   return True
+
+def sanitizeString(s):
+  s = s.replace('\\', '\\textbackslash')
+  s = s.replace('&', '\\&')
+  s = s.replace('%', '\\%')
+  s = s.replace('$', '\\$')
+  s = s.replace('#', '\\#')
+  s = s.replace('_', '\\_')
+  s = s.replace('{', '\\{')
+  s = s.replace('}', '\\}')
+  s = s.replace('~', '\\textasciitilde')
+  s = s.replace('^', '\\textasciicircum')
+  return s
 
 def is_special_section(section_name):
   special_sections = [
