@@ -6,6 +6,7 @@ const DescriptionItem = React.createClass({
     this.props.handleUpdateListContainerData(this.props.index, e.target.value)
   },
   render() {
+    console.log('Rendering DescriptionItem')
     return (
       <div className="form-group">
         <div className=''>

@@ -124,7 +124,7 @@ def generate_latex():
       phone_number_second_part,
       phone_number_third_part
     ))
-    phone_num_sanitized = sanitizeString(phone_number_str) + ' \\\\'
+    phone_num_sanitized = sanitizeString(phone_number_str) + ' \\\\' if len(phone_number) > 0 else ''
     address_str = ('%s \\\\' % sanitizeString(header_data['address'])) if header_data['address'] != '' else ''
     website_str = ('%s \\\\' % sanitizeString(header_data['website'])) if header_data['website'] != '' else ''
     email_str = ('%s' % sanitizeString(header_data['email'])) if header_data['email'] != '' else ''
@@ -183,7 +183,7 @@ def generate_latex():
             description_str = NoEscape('\\item %s' % sanitizeString(description_items[k]))
             curr_subsection.append(description_str)
 
-  if 'skills' in section_dict:
+  if 'skills' in section_dict and len(section_data['listItems']) != 0:
     with doc.create(RSectionEnv(arguments='Skills')) as skills_section:
       with doc.create(Tabular(NoEscape('@{} >{\\bfseries}l @{\\hspace{6ex}} l'))) as skills_table:
         skills_list = section_dict['skills']['listItems']

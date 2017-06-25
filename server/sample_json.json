@@ -75,7 +75,7 @@
     },
     {
       "sectionName": "skills",
-      "skillsList": [
+      "listItems": [
         {
           "listName": "Languages",
           "listItems": [

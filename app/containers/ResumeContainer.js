@@ -8,6 +8,7 @@ const ResumeContainer = React.createClass({
   getInitialState() {
     return {
       isLoading: true,
+      randNumRefresh: 0
     }
   },
   componentDidMount() {
@@ -34,9 +35,12 @@ const ResumeContainer = React.createClass({
   },
   // ${resume_bucket_url}/${this.resumeHashId}/resume.pdf
   handleSubmit(e) {
+    // Create a random number to force resume to update
+    const randNum = Math.floor(Math.random() * 10000);
     e.preventDefault()
     this.setState({ // Prompt re-rendering of resume
-      isLoading: true
+      isLoading: true,
+      randNumRefresh: randNum
     })
     axios({
       method: 'post',
@@ -90,7 +94,8 @@ const ResumeContainer = React.createClass({
         <div style={maxHeight}>
           <Resume
             isLoading={this.state.isLoading}
-            resumeHashId={this.props.resumeHashId} />
+            resumeHashId={this.props.resumeHashId}
+            randNumRefresh={this.state.randNumRefresh} />
         </div>
       </div>
     )
